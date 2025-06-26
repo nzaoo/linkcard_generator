@@ -1,5 +1,9 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",                       
+    "paths": {
+      "@/*": ["./*"]                      
+    },
     "target": "esnext",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
@@ -13,11 +17,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "incremental": true,
-    "baseUrl": ".",                              // 👈 cần dòng này
-    "paths": {
-      "@/*": ["./*"]                             // 👈 và dòng này
-    }
+    "incremental": true
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]
