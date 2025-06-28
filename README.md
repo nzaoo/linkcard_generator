@@ -207,6 +207,4 @@ Thank you for using NZaoCard! If you like this project, please give us a ⭐ on 
 
 <<<<<<< HEAD
 \*\*Made with ❤️ by nzaoo
-=======
-**Made with ❤️ by nzaoo
->>>>>>> 188dd8e76525f7db779786ed547789220075424e
+
