@@ -90,7 +90,7 @@ npm run dev
 yarn dev
 ```
 
-Visit [http://localhost:3000](http://localhost:3000) to see the application.
+Visit [[http://localhost:3000](http://localhost:3000](https://linkcardgenerator.vercel.app/)) to see the application.
 
 ## 🎨 Project Structure
 
