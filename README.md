@@ -205,4 +205,4 @@ Thank you for using NZaoCard! If you like this project, please give us a ⭐ on 
 
 ---
 
-**Made with ❤️ by [Your Name]**
+**Made with ❤️ by nzaoo
