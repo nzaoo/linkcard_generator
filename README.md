@@ -195,9 +195,9 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 ## 📞 Contact
 
-- **Email**: your.email@example.com
-- **Website**: https://yourwebsite.com
-- **GitHub**: https://github.com/yourusername
+- **Email**: nzao1327@gmail.com
+- **Website**: [https://yourwebsite.com](https://nzaoo.github.io/nzao_card/)
+- **GitHub**: [https://github.com/yourusername](https://github.com/nzaoo)
 
 ## 🙏 Acknowledgments
 
