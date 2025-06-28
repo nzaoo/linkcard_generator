@@ -90,7 +90,7 @@ npm run dev
 yarn dev
 ```
 
-Visit [http://localhost:3000](http://localhost:3000) to see the application.
+Visit https://linkcardgenerator.vercel.app to see the application.
 
 ## 🎨 Project Structure
 
@@ -195,9 +195,9 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 ## 📞 Contact
 
-- **Email**: your.email@example.com
-- **Website**: https://yourwebsite.com
-- **GitHub**: https://github.com/yourusername
+- **Email**: nzao1327@gmail.com
+- **Website**: https://nzaoo.github.io/nzao_card
+- **GitHub**:  https://github.com/nzaoo
 
 ## 🙏 Acknowledgments
 
