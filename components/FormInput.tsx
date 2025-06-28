@@ -30,18 +30,18 @@ export default function FormInput({
     }
   };
 
-  const baseClasses = `w-full p-4 rounded-xl border-2 focus-ring transition-all duration-200 ${
+  const baseClasses = `w-full p-4 rounded-xl border-2 focus-ring transition-all duration-200 bg-gray-800/50 text-white placeholder-gray-400 ${
     error 
-      ? 'border-red-400 bg-red-50' 
+      ? 'border-red-400 bg-red-900/20' 
       : isFocused
-        ? 'border-indigo-400'
-        : 'border-gray-200'
+        ? 'border-yellow-400 bg-gray-800/70'
+        : 'border-gray-600'
   }`;
 
   return (
     <div>
-      <label className="block mb-3 text-gray-700 font-semibold">
-        {label} {required && <span className="text-red-500">*</span>}
+      <label className="block mb-3 text-gray-100 font-semibold">
+        {label} {required && <span className="text-red-400">*</span>}
       </label>
       
       {type === "textarea" ? (
@@ -68,7 +68,7 @@ export default function FormInput({
       )}
       
       {error && (
-        <p className="text-red-500 text-sm mt-2 animate-fade-in flex items-center">
+        <p className="text-red-400 text-sm mt-2 animate-fade-in flex items-center">
           <span className="mr-1">⚠️</span>
           {error}
         </p>

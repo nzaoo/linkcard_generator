@@ -86,7 +86,7 @@ const getGreeting = () => {
   return 'Good night 🌙';
 };
 
-export default function CardPreview({ 
+export default function CardPreviewNew({ 
   name, 
   bio, 
   links = [], 
@@ -137,9 +137,15 @@ export default function CardPreview({
       </div>
 
       <div 
-        className={`dark-card rounded-3xl p-8 transition-all duration-300 ${className}`}
+        className={`bg-gray-900/85 backdrop-blur-xl rounded-3xl p-8 shadow-2xl border border-white/10 transition-all duration-300 ${className}`}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
+        style={{
+          transform: isHovered ? 'translateY(-8px) rotateX(2deg) rotateY(-2deg)' : 'translateY(0)',
+          boxShadow: isHovered 
+            ? '0 20px 60px rgba(0, 0, 0, 0.4), 0 0 30px rgba(255, 215, 0, 0.3), 0 0 0 1px rgba(255, 215, 0, 0.2)' 
+            : '0 8px 32px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.05)'
+        }}
       >
         <div className="text-center">
           {/* Avatar with animated border */}
@@ -167,7 +173,7 @@ export default function CardPreview({
           </div>
 
           {/* Name with gradient text */}
-          <h2 className="text-3xl font-bold mb-2 gold-gradient-text">
+          <h2 className="text-3xl font-bold mb-2 bg-gradient-to-r from-yellow-400 via-orange-500 to-pink-500 bg-clip-text text-transparent">
             {name || "Your Name"}
           </h2>
 
@@ -228,4 +234,4 @@ export default function CardPreview({
       </div>
     </div>
   );
-}
+} 

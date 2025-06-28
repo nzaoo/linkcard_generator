@@ -197,7 +197,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 - **Email**: nzao1327@gmail.com
 - **Website**: https://nzaoo.github.io/nzao_card
-- **GitHub**:  https://github.com/nzaoo
+- **GitHub**: https://github.com/nzaoo
 
 ## 🙏 Acknowledgments
 
@@ -205,4 +205,4 @@ Thank you for using NZaoCard! If you like this project, please give us a ⭐ on 
 
 ---
 
-**Made with ❤️ by [Your Name]**
+\*\*Made with ❤️ by nzaoo

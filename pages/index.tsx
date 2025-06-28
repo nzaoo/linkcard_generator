@@ -7,6 +7,7 @@ import generateSlug from "@/utils/generateSlug";
 import CardPreview from "@/components/CardPreview";
 import FormInput from "@/components/FormInput";
 import Head from "next/head";
+
 export default function Home() {
   const router = useRouter();
 
@@ -105,18 +106,18 @@ export default function Home() {
         <meta name="description" content="Tạo thẻ giới thiệu cá nhân đẹp mắt để chia sẻ với mọi người. Kết nối, giới thiệu bản thân và tạo ấn tượng đầu tiên tốt đẹp." />
       </Head>
 
-      <div className="min-h-screen bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 text-white font-sans overflow-x-hidden">
-        {/* Animated background elements */}
+      <div className="min-h-screen dark-gradient-bg text-white font-sans overflow-x-hidden relative">
+        {/* Enhanced animated background */}
         <div className="absolute inset-0 -z-10">
-          <div className="absolute w-20 h-20 bg-white/10 rounded-full top-[20%] left-[10%] animate-float"></div>
-          <div className="absolute w-32 h-32 bg-white/10 rounded-full top-[60%] right-[15%] animate-float delay-200"></div>
-          <div className="absolute w-16 h-16 bg-white/10 rounded-full bottom-[20%] left-[20%] animate-float delay-400"></div>
-          <div className="absolute w-24 h-24 bg-white/10 rounded-full top-[40%] right-[40%] animate-float delay-600"></div>
+          <div className="absolute w-32 h-32 bg-white/5 rounded-full top-[10%] left-[10%] animate-float"></div>
+          <div className="absolute w-24 h-24 bg-white/5 rounded-full top-[60%] right-[20%] animate-float delay-300"></div>
+          <div className="absolute w-16 h-16 bg-white/5 rounded-full bottom-[20%] left-[30%] animate-float delay-600"></div>
+          <div className="absolute w-20 h-20 bg-white/5 rounded-full top-[30%] right-[60%] animate-float delay-900"></div>
         </div>
 
-        <main className="max-w-7xl mx-auto px-4 py-16">
+        <main className="container mx-auto px-4 py-8">
           <header className="text-center mb-16 animate-fade-in">
-            <h1 className="text-6xl font-bold bg-gradient-to-r from-white to-gray-200 bg-clip-text text-transparent drop-shadow-lg mb-4">
+            <h1 className="text-6xl font-bold gold-gradient-text drop-shadow-lg mb-4">
               NZaoCard
             </h1>
             <p className="text-xl opacity-90 max-w-2xl mx-auto leading-relaxed">
@@ -128,48 +129,49 @@ export default function Home() {
           <div className="grid lg:grid-cols-2 gap-16 items-start">
             {/* Form Section */}
             <section className="animate-slide-in-up">
-              <div className="bg-white/95 backdrop-blur-lg rounded-3xl p-8 shadow-2xl border border-white/30">
-                <h2 className="text-gray-800 text-3xl font-bold mb-8 text-center">Tạo Thẻ Của Bạn</h2>
+              <div className="glass-card rounded-3xl p-8 shadow-2xl">
+                <h2 className="text-gray-100 text-3xl font-bold mb-8 text-center">Tạo Thẻ Của Bạn</h2>
+                
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <FormInput
-                    label="Họ và Tên"
+                    label="Tên của bạn"
                     value={name}
                     onChange={setName}
-                    placeholder="Nhập họ và tên của bạn"
-                    required
                     error={errors.name}
                     onErrorClear={() => clearError('name')}
+                    placeholder="Nhập tên của bạn..."
+                    required
                   />
 
                   <FormInput
                     label="Giới thiệu"
                     value={bio}
                     onChange={setBio}
-                    placeholder="Hãy kể về bản thân bạn..."
-                    type="textarea"
-                    required
                     error={errors.bio}
                     onErrorClear={() => clearError('bio')}
+                    placeholder="Giới thiệu ngắn gọn về bản thân..."
+                    type="textarea"
+                    required
                   />
 
                   <FormInput
-                    label="Link Facebook"
+                    label="Facebook (tùy chọn)"
                     value={facebook}
                     onChange={setFacebook}
-                    placeholder="https://facebook.com/yourprofile"
-                    type="url"
                     error={errors.facebook}
                     onErrorClear={() => clearError('facebook')}
+                    placeholder="https://facebook.com/username"
+                    type="url"
                   />
 
                   <FormInput
-                    label="Website / Portfolio"
+                    label="Website (tùy chọn)"
                     value={website}
                     onChange={setWebsite}
-                    placeholder="https://yourwebsite.com"
-                    type="url"
                     error={errors.website}
                     onErrorClear={() => clearError('website')}
+                    placeholder="https://yourwebsite.com"
+                    type="url"
                   />
 
                   <button
@@ -177,13 +179,13 @@ export default function Home() {
                     disabled={isLoading}
                     className={`w-full py-4 text-lg font-bold rounded-xl transition-all duration-300 transform hover:scale-105 focus-ring ${
                       isLoading
-                        ? 'bg-gray-400 cursor-not-allowed'
-                        : 'bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 hover:shadow-xl'
+                        ? 'bg-gray-600 cursor-not-allowed'
+                        : 'bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 hover:shadow-xl text-gray-900'
                     }`}
                   >
                     {isLoading ? (
                       <div className="flex items-center justify-center">
-                        <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white mr-3"></div>
+                        <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-gray-900 mr-3"></div>
                         Đang tạo thẻ...
                       </div>
                     ) : (
@@ -197,7 +199,7 @@ export default function Home() {
             {/* Preview Section */}
             <section className="animate-slide-in-up" style={{ animationDelay: '200ms' }}>
               <div className="sticky top-8">
-                <h3 className="text-2xl font-bold mb-6 text-center">Xem Trước</h3>
+                <h3 className="text-2xl font-bold mb-6 text-center text-yellow-400">Xem Trước</h3>
                 <CardPreview
                   name={name}
                   bio={bio}
