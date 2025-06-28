@@ -205,6 +205,5 @@ Thank you for using NZaoCard! If you like this project, please give us a ⭐ on 
 
 ---
 
-<<<<<<< HEAD
 \*\*Made with ❤️ by nzaoo
 
