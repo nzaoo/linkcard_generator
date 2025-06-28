@@ -1,33 +1,33 @@
-# IntroCard - Thẻ Giới Thiệu Cá Nhân Đẹp Mắt
+# IntroCard - Beautiful Personal Introduction Cards
 
 ![IntroCard](https://img.shields.io/badge/IntroCard-✨%20Beautiful%20Personal%20Cards-blue?style=for-the-badge&logo=react)
 
-Một ứng dụng web hiện đại để tạo thẻ giới thiệu cá nhân đẹp mắt với giao diện người dùng tuyệt vời, animations mượt mà và trải nghiệm người dùng tối ưu.
+A modern web application for creating beautiful personal introduction cards with stunning UI, smooth animations, and optimal user experience.
 
-## ✨ Tính Năng Nổi Bật
+## ✨ Key Features
 
-### 🎨 **Giao Diện Hiện Đại**
+### 🎨 **Modern Design**
 
-- Design gradient đẹp mắt với glass morphism effect
-- Animations mượt mà và micro-interactions
-- Responsive design cho mọi thiết bị
-- Dark/light theme tự động
+- Beautiful gradient backgrounds with glass morphism effects
+- Smooth animations and micro-interactions
+- Responsive design for all devices
+- Dark/light theme support
 
-### 📱 **Trải Nghiệm Người Dùng**
+### 📱 **User Experience**
 
-- Form validation thông minh với error handling
-- Real-time preview khi nhập liệu
-- Loading states và feedback trực quan
-- Smooth transitions và hover effects
+- Smart form validation with error handling
+- Real-time preview while typing
+- Loading states and visual feedback
+- Smooth transitions and hover effects
 
-### 🔗 **Tính Năng Chia Sẻ**
+### 🔗 **Sharing Features**
 
-- Tạo thẻ giới thiệu với thông tin cá nhân
-- Hỗ trợ nhiều platform social media
-- URL tùy chỉnh cho mỗi thẻ
-- SEO optimized với meta tags
+- Create personal introduction cards
+- Support for multiple social media platforms
+- Custom URLs for each card
+- SEO optimized with meta tags
 
-### 🎯 **Platforms Hỗ Trợ**
+### 🎯 **Supported Platforms**
 
 - Facebook, Instagram, Twitter/X
 - LinkedIn, YouTube, TikTok
@@ -35,43 +35,43 @@ Một ứng dụng web hiện đại để tạo thẻ giới thiệu cá nhân 
 - Email, Phone, WhatsApp
 - Telegram, Discord, Spotify
 - Behance, Dribbble, Pinterest
-- Snapchat, Twitch và nhiều hơn nữa!
+- Snapchat, Twitch and many more!
 
-## 🚀 Công Nghệ Sử Dụng
+## 🚀 Technologies Used
 
 - **Frontend**: Next.js 13, TypeScript, Tailwind CSS
 - **Backend**: Firebase Firestore
 - **Styling**: Custom CSS animations, Glass morphism
 - **Deployment**: Vercel (recommended)
 
-## 📦 Cài Đặt
+## 📦 Installation
 
-### Yêu Cầu Hệ Thống
+### System Requirements
 
 - Node.js 16+
-- npm hoặc yarn
+- npm or yarn
 - Firebase project
 
-### Bước 1: Clone Repository
+### Step 1: Clone Repository
 
 ```bash
 git clone https://github.com/yourusername/introcard.git
 cd introcard
 ```
 
-### Bước 2: Cài Đặt Dependencies
+### Step 2: Install Dependencies
 
 ```bash
 npm install
-# hoặc
+# or
 yarn install
 ```
 
-### Bước 3: Cấu Hình Firebase
+### Step 3: Configure Firebase
 
-1. Tạo project mới trên [Firebase Console](https://console.firebase.google.com/)
-2. Bật Firestore Database
-3. Tạo file `.env.local` trong root directory:
+1. Create a new project on [Firebase Console](https://console.firebase.google.com/)
+2. Enable Firestore Database
+3. Create `.env.local` file in root directory:
 
 ```env
 NEXT_PUBLIC_FIREBASE_API_KEY=your_api_key
@@ -82,27 +82,27 @@ NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your_messaging_sender_id
 NEXT_PUBLIC_FIREBASE_APP_ID=your_app_id
 ```
 
-### Bước 4: Chạy Development Server
+### Step 4: Run Development Server
 
 ```bash
 npm run dev
-# hoặc
+# or
 yarn dev
 ```
 
-Truy cập [http://localhost:3000](http://localhost:3000) để xem ứng dụng.
+Visit [http://localhost:3000](http://localhost:3000) to see the application.
 
-## 🎨 Cấu Trúc Dự Án
+## 🎨 Project Structure
 
 ```
 introcard/
 ├── components/          # React components
-│   ├── CardPreview.tsx  # Component hiển thị thẻ
-│   ├── FormInput.tsx    # Component input form
-│   └── SocialLinks.tsx  # Component social links
+│   ├── CardPreview.tsx  # Card display component
+│   ├── FormInput.tsx    # Form input component
+│   └── SocialLinks.tsx  # Social links component
 ├── pages/              # Next.js pages
-│   ├── index.tsx       # Trang chủ
-│   └── u/[slug].tsx    # Trang hiển thị thẻ
+│   ├── index.tsx       # Home page
+│   └── u/[slug].tsx    # Card display page
 ├── styles/             # CSS styles
 │   └── globals.css     # Global styles & animations
 ├── lib/                # Utilities
@@ -111,33 +111,33 @@ introcard/
     └── generateSlug.ts # Slug generator
 ```
 
-## 🎯 Cách Sử Dụng
+## 🎯 How to Use
 
-### 1. Tạo Thẻ Mới
+### 1. Create a New Card
 
-- Truy cập trang chủ
-- Điền thông tin cá nhân (tên, giới thiệu)
-- Thêm các liên kết social media
-- Xem preview real-time
-- Nhấn "Tạo Thẻ Của Tôi"
+- Visit the home page
+- Fill in personal information (name, bio)
+- Add social media links
+- See real-time preview
+- Click "Create My Card"
 
-### 2. Chia Sẻ Thẻ
+### 2. Share Your Card
 
-- Sau khi tạo, bạn sẽ được chuyển đến URL thẻ
-- Copy URL và chia sẻ với bạn bè
-- Thẻ sẽ hiển thị đẹp mắt trên mọi thiết bị
+- After creation, you'll be redirected to your card URL
+- Copy the URL and share with friends
+- Card will display beautifully on any device
 
-### 3. Tùy Chỉnh
+### 3. Customize
 
-- Thay đổi thông tin bất cứ lúc nào
-- Thêm/bớt social links
-- Cập nhật avatar (sắp tới)
+- Change information anytime
+- Add/remove social links
+- Update avatar (coming soon)
 
 ## 🎨 Customization
 
-### Thay Đổi Màu Sắc
+### Change Colors
 
-Chỉnh sửa gradient trong `tailwind.config.js`:
+Edit gradient in `tailwind.config.js`:
 
 ```javascript
 theme: {
@@ -152,13 +152,13 @@ theme: {
 }
 ```
 
-### Thêm Platform Mới
+### Add New Platform
 
-Cập nhật `components/CardPreview.tsx`:
+Update `components/CardPreview.tsx`:
 
 ```typescript
 const getPlatformIcon = (platform: string) => {
-  // Thêm platform mới
+  // Add new platform
   if (platformLower.includes("your-platform")) return "🎯";
   return "🔗";
 };
@@ -168,8 +168,8 @@ const getPlatformIcon = (platform: string) => {
 
 ### Vercel (Recommended)
 
-1. Push code lên GitHub
-2. Connect repository với Vercel
+1. Push code to GitHub
+2. Connect repository to Vercel
 3. Add environment variables
 4. Deploy!
 
@@ -179,29 +179,29 @@ const getPlatformIcon = (platform: string) => {
 2. Upload `out` folder
 3. Configure redirects
 
-## 🤝 Đóng Góp
+## 🤝 Contributing
 
-Chúng tôi rất hoan nghênh mọi đóng góp! Hãy:
+We welcome all contributions! Please:
 
-1. Fork project
-2. Tạo feature branch (`git checkout -b feature/AmazingFeature`)
+1. Fork the project
+2. Create feature branch (`git checkout -b feature/AmazingFeature`)
 3. Commit changes (`git commit -m 'Add some AmazingFeature'`)
 4. Push to branch (`git push origin feature/AmazingFeature`)
-5. Mở Pull Request
+5. Open Pull Request
 
 ## 📄 License
 
 Distributed under the MIT License. See `LICENSE` for more information.
 
-## 📞 Liên Hệ
+## 📞 Contact
 
-- **Email**: nzao1327@gmail.com
-- **Website**: [https://yourwebsite.com](https://nzaoo.github.io/nzao_card/)
-- **GitHub**: [https://github.com/yourusername](https://github.com/nzaoo)
+- **Email**: your.email@example.com
+- **Website**: https://yourwebsite.com
+- **GitHub**: https://github.com/yourusername
 
-## 🙏 Cảm Ơn
+## 🙏 Acknowledgments
 
-Cảm ơn bạn đã sử dụng IntroCard! Nếu bạn thích dự án này, hãy cho chúng tôi một ⭐ trên GitHub.
+Thank you for using IntroCard! If you like this project, please give us a ⭐ on GitHub.
 
 ---
 
