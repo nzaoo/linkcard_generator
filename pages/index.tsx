@@ -4,6 +4,9 @@ import { useRouter } from "next/router";
 import { db } from "@/lib/firebase";
 import { addDoc, collection } from "firebase/firestore";
 import generateSlug from "@/utils/generateSlug";
+import CardPreview from "@/components/CardPreview";
+import FormInput from "@/components/FormInput";
+import Head from "next/head";
 
 export default function Home() {
   const router = useRouter();
@@ -12,6 +15,8 @@ export default function Home() {
   const [bio, setBio] = useState("");
   const [facebook, setFacebook] = useState("");
   const [website, setWebsite] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [errors, setErrors] = useState<{[key: string]: string}>({});
 
   const getInitials = (fullName: string) => {
     return fullName
@@ -22,123 +27,189 @@ export default function Home() {
       .slice(0, 2);
   };
 
+  const validateForm = () => {
+    const newErrors: {[key: string]: string} = {};
+
+    if (!name.trim()) {
+      newErrors.name = "Tên là bắt buộc";
+    } else if (name.trim().length < 2) {
+      newErrors.name = "Tên phải có ít nhất 2 ký tự";
+    }
+
+    if (!bio.trim()) {
+      newErrors.bio = "Giới thiệu là bắt buộc";
+    } else if (bio.trim().length < 10) {
+      newErrors.bio = "Giới thiệu phải có ít nhất 10 ký tự";
+    }
+
+    if (facebook && !facebook.includes('facebook.com')) {
+      newErrors.facebook = "Vui lòng nhập link Facebook hợp lệ";
+    }
+
+    if (website && !website.startsWith('http')) {
+      newErrors.website = "Vui lòng nhập URL hợp lệ (bắt đầu bằng http:// hoặc https://)";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!validateForm()) return;
+
+    setIsLoading(true);
+    
+    try {
+      const links = [];
+      if (facebook) links.push({ platform: "Facebook", url: facebook });
+      if (website) links.push({ platform: "Website", url: website });
+
+      const cardData = {
+        name: name.trim(),
+        bio: bio.trim(),
+        links,
+        slug: generateSlug(name),
+        createdAt: new Date(),
+      };
+
+      const docRef = await addDoc(collection(db, "cards"), cardData);
+      
+      // Redirect to the new card
+      router.push(`/u/${cardData.slug}`);
+    } catch (error) {
+      console.error("Error creating card:", error);
+      alert("Có lỗi xảy ra khi tạo thẻ. Vui lòng thử lại!");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Prepare links for preview
+  const previewLinks = [];
+  if (facebook) previewLinks.push({ platform: "Facebook", url: facebook });
+  if (website) previewLinks.push({ platform: "Website", url: website });
+
+  const clearError = (field: string) => {
+    setErrors(prev => {
+      const newErrors = { ...prev };
+      delete newErrors[field];
+      return newErrors;
+    });
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-500 to-purple-600 text-white font-sans overflow-x-hidden">
-      <div className="absolute inset-0 -z-10">
-        <div className="absolute w-20 h-20 bg-white/10 rounded-full top-[20%] left-[10%] animate-float"></div>
-        <div className="absolute w-32 h-32 bg-white/10 rounded-full top-[60%] right-[15%] animate-float delay-200"></div>
-        <div className="absolute w-16 h-16 bg-white/10 rounded-full bottom-[20%] left-[20%] animate-float delay-400"></div>
-      </div>
+    <>
+      <Head>
+        <title>IntroCard - Tạo thẻ giới thiệu cá nhân đẹp mắt</title>
+        <meta name="description" content="Tạo thẻ giới thiệu cá nhân đẹp mắt để chia sẻ với mọi người. Kết nối, giới thiệu bản thân và tạo ấn tượng đầu tiên tốt đẹp." />
+      </Head>
 
-      <main className="max-w-6xl mx-auto px-4 py-16">
-        <header className="text-center mb-12">
-          <h1 className="text-5xl font-bold bg-gradient-to-r from-white to-gray-200 bg-clip-text text-transparent drop-shadow-lg">
-            IntroCard
-          </h1>
-          <p className="text-lg opacity-90 max-w-xl mx-auto mt-4">
-            Create beautiful personal introduction cards to share with the world.
-            Connect, introduce yourself, and make lasting first impressions.
-          </p>
-        </header>
-
-        <div className="grid md:grid-cols-2 gap-12">
-          <section className="bg-white/90 rounded-2xl p-8 backdrop-blur border border-white/30 shadow-xl">
-            <h2 className="text-gray-800 text-2xl font-semibold mb-6">Create Your Card</h2>
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-              }}
-              className="space-y-6"
-            >
-              <div>
-                <label className="block mb-2 text-gray-700">Full Name</label>
-                <input
-                  type="text"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  className="w-full p-4 rounded-xl border-2 border-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-400"
-                  placeholder="Enter your full name"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block mb-2 text-gray-700">Bio / Introduction</label>
-                <textarea
-                  value={bio}
-                  onChange={(e) => setBio(e.target.value)}
-                  className="w-full p-4 rounded-xl border-2 border-gray-200 min-h-[100px] resize-y focus:outline-none focus:ring-2 focus:ring-indigo-400"
-                  placeholder="Tell us about yourself..."
-                ></textarea>
-              </div>
-              <div>
-                <label className="block mb-2 text-gray-700">Facebook Profile Link</label>
-                <input
-                  type="url"
-                  value={facebook}
-                  onChange={(e) => setFacebook(e.target.value)}
-                  className="w-full p-4 rounded-xl border-2 border-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-400"
-                  placeholder="https://facebook.com/yourprofile"
-                />
-              </div>
-              <div>
-                <label className="block mb-2 text-gray-700">Website / Portfolio (Optional)</label>
-                <input
-                  type="url"
-                  value={website}
-                  onChange={(e) => setWebsite(e.target.value)}
-                  className="w-full p-4 rounded-xl border-2 border-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-400"
-                  placeholder="https://yourwebsite.com"
-                />
-              </div>
-              <button
-                type="submit"
-                className="w-full py-3 text-lg font-semibold rounded-xl bg-gradient-to-r from-indigo-500 to-purple-600 hover:shadow-lg transition relative overflow-hidden"
-              >
-                Generate My Card
-              </button>
-            </form>
-          </section>
-
-          <section className="space-y-8">
-            <div className="bg-white/90 rounded-2xl p-8 backdrop-blur border border-white/30 shadow-xl transform transition hover:-translate-y-1 hover:rotate-x-2">
-              <div className="w-24 h-24 mx-auto rounded-full border-4 border-white bg-gradient-to-r from-indigo-500 to-purple-600 flex items-center justify-center text-3xl font-bold text-white mb-4">
-                {name ? getInitials(name) : "?"}
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-gray-800 mb-2">
-                  {name || "Your Name"}
-                </div>
-                <div className="text-gray-600 mb-4">
-                  {bio || "Your introduction will appear here..."}
-                </div>
-                <div className="flex justify-center gap-4 flex-wrap">
-                  {facebook && (
-                    <a
-                      href={facebook}
-                      target="_blank"
-                      className="bg-[#1877f2] text-white px-4 py-2 rounded-full shadow hover:bg-[#166fe5] transition"
-                    >
-                      📘 Facebook
-                    </a>
-                  )}
-                  {website && (
-                    <a
-                      href={website}
-                      target="_blank"
-                      className="bg-indigo-500 text-white px-4 py-2 rounded-full shadow hover:bg-indigo-600 transition"
-                    >
-                      🌐 Website
-                    </a>
-                  )}
-                  {!facebook && !website && (
-                    <span className="text-gray-400">Add your links to see them here</span>
-                  )}
-                </div>
-              </div>
-            </div>
-          </section>
+      <div className="min-h-screen bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 text-white font-sans overflow-x-hidden">
+        {/* Animated background elements */}
+        <div className="absolute inset-0 -z-10">
+          <div className="absolute w-20 h-20 bg-white/10 rounded-full top-[20%] left-[10%] animate-float"></div>
+          <div className="absolute w-32 h-32 bg-white/10 rounded-full top-[60%] right-[15%] animate-float delay-200"></div>
+          <div className="absolute w-16 h-16 bg-white/10 rounded-full bottom-[20%] left-[20%] animate-float delay-400"></div>
+          <div className="absolute w-24 h-24 bg-white/10 rounded-full top-[40%] right-[40%] animate-float delay-600"></div>
         </div>
-      </main>
-    </div>
+
+        <main className="max-w-7xl mx-auto px-4 py-16">
+          <header className="text-center mb-16 animate-fade-in">
+            <h1 className="text-6xl font-bold bg-gradient-to-r from-white to-gray-200 bg-clip-text text-transparent drop-shadow-lg mb-4">
+              IntroCard
+            </h1>
+            <p className="text-xl opacity-90 max-w-2xl mx-auto leading-relaxed">
+              Tạo thẻ giới thiệu cá nhân đẹp mắt để chia sẻ với thế giới.
+              Kết nối, giới thiệu bản thân và tạo ấn tượng đầu tiên tốt đẹp.
+            </p>
+          </header>
+
+          <div className="grid lg:grid-cols-2 gap-16 items-start">
+            {/* Form Section */}
+            <section className="animate-slide-in-up">
+              <div className="bg-white/95 backdrop-blur-lg rounded-3xl p-8 shadow-2xl border border-white/30">
+                <h2 className="text-gray-800 text-3xl font-bold mb-8 text-center">Tạo Thẻ Của Bạn</h2>
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  <FormInput
+                    label="Họ và Tên"
+                    value={name}
+                    onChange={setName}
+                    placeholder="Nhập họ và tên của bạn"
+                    required
+                    error={errors.name}
+                    onErrorClear={() => clearError('name')}
+                  />
+
+                  <FormInput
+                    label="Giới thiệu"
+                    value={bio}
+                    onChange={setBio}
+                    placeholder="Hãy kể về bản thân bạn..."
+                    type="textarea"
+                    required
+                    error={errors.bio}
+                    onErrorClear={() => clearError('bio')}
+                  />
+
+                  <FormInput
+                    label="Link Facebook"
+                    value={facebook}
+                    onChange={setFacebook}
+                    placeholder="https://facebook.com/yourprofile"
+                    type="url"
+                    error={errors.facebook}
+                    onErrorClear={() => clearError('facebook')}
+                  />
+
+                  <FormInput
+                    label="Website / Portfolio"
+                    value={website}
+                    onChange={setWebsite}
+                    placeholder="https://yourwebsite.com"
+                    type="url"
+                    error={errors.website}
+                    onErrorClear={() => clearError('website')}
+                  />
+
+                  <button
+                    type="submit"
+                    disabled={isLoading}
+                    className={`w-full py-4 text-lg font-bold rounded-xl transition-all duration-300 transform hover:scale-105 focus-ring ${
+                      isLoading
+                        ? 'bg-gray-400 cursor-not-allowed'
+                        : 'bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 hover:shadow-xl'
+                    }`}
+                  >
+                    {isLoading ? (
+                      <div className="flex items-center justify-center">
+                        <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white mr-3"></div>
+                        Đang tạo thẻ...
+                      </div>
+                    ) : (
+                      'Tạo Thẻ Của Tôi'
+                    )}
+                  </button>
+                </form>
+              </div>
+            </section>
+
+            {/* Preview Section */}
+            <section className="animate-slide-in-up" style={{ animationDelay: '200ms' }}>
+              <div className="sticky top-8">
+                <h3 className="text-2xl font-bold mb-6 text-center">Xem Trước</h3>
+                <CardPreview
+                  name={name}
+                  bio={bio}
+                  links={previewLinks}
+                  isPreview={true}
+                />
+              </div>
+            </section>
+          </div>
+        </main>
+      </div>
+    </>
   );
 }
