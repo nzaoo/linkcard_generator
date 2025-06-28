@@ -5,6 +5,18 @@ module.exports = {
     './components/**/*.{js,ts,jsx,tsx,mdx}',
     './app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
+  safelist: [
+    'focus:ring-indigo-400',
+    'focus:ring-2',
+    'focus:ring-offset-2',
+    'focus:outline-none',
+    'focus:border-indigo-400',
+    'focus:border-red-400',
+    'border-red-400',
+    'bg-red-50',
+    'border-gray-200',
+    'border-indigo-400'
+  ],
   theme: {
     extend: {
       animation: {
