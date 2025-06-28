@@ -7,7 +7,6 @@ import generateSlug from "@/utils/generateSlug";
 import CardPreview from "@/components/CardPreview";
 import FormInput from "@/components/FormInput";
 import Head from "next/head";
-
 export default function Home() {
   const router = useRouter();
 
@@ -102,7 +101,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>IntroCard - Tạo thẻ giới thiệu cá nhân đẹp mắt</title>
+        <title>NZaoCard - Tạo thẻ giới thiệu cá nhân đẹp mắt</title>
         <meta name="description" content="Tạo thẻ giới thiệu cá nhân đẹp mắt để chia sẻ với mọi người. Kết nối, giới thiệu bản thân và tạo ấn tượng đầu tiên tốt đẹp." />
       </Head>
 
@@ -118,7 +117,7 @@ export default function Home() {
         <main className="max-w-7xl mx-auto px-4 py-16">
           <header className="text-center mb-16 animate-fade-in">
             <h1 className="text-6xl font-bold bg-gradient-to-r from-white to-gray-200 bg-clip-text text-transparent drop-shadow-lg mb-4">
-              IntroCard
+              NZaoCard
             </h1>
             <p className="text-xl opacity-90 max-w-2xl mx-auto leading-relaxed">
               Tạo thẻ giới thiệu cá nhân đẹp mắt để chia sẻ với thế giới.

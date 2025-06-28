@@ -1,6 +1,6 @@
-# IntroCard - Beautiful Personal Introduction Cards
+# NZaoCard - Beautiful Personal Introduction Cards
 
-![IntroCard](https://img.shields.io/badge/IntroCard-✨%20Beautiful%20Personal%20Cards-blue?style=for-the-badge&logo=react)
+![NZaoCard](https://img.shields.io/badge/NZaoCard-✨%20Beautiful%20Personal%20Cards-blue?style=for-the-badge&logo=react)
 
 A modern web application for creating beautiful personal introduction cards with stunning UI, smooth animations, and optimal user experience.
 
@@ -39,7 +39,7 @@ A modern web application for creating beautiful personal introduction cards with
 
 ## 🚀 Technologies Used
 
-- **Frontend**: Next.js 13, TypeScript, Tailwind CSS
+- **Frontend**: Next.js 14, TypeScript, Tailwind CSS
 - **Backend**: Firebase Firestore
 - **Styling**: Custom CSS animations, Glass morphism
 - **Deployment**: Vercel (recommended)
@@ -55,8 +55,8 @@ A modern web application for creating beautiful personal introduction cards with
 ### Step 1: Clone Repository
 
 ```bash
-git clone https://github.com/yourusername/introcard.git
-cd introcard
+git clone https://github.com/yourusername/nzaocard.git
+cd nzaocard
 ```
 
 ### Step 2: Install Dependencies
@@ -95,7 +95,7 @@ Visit [http://localhost:3000](http://localhost:3000) to see the application.
 ## 🎨 Project Structure
 
 ```
-introcard/
+nzaocard/
 ├── components/          # React components
 │   ├── CardPreview.tsx  # Card display component
 │   ├── FormInput.tsx    # Form input component
@@ -201,7 +201,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 ## 🙏 Acknowledgments
 
-Thank you for using IntroCard! If you like this project, please give us a ⭐ on GitHub.
+Thank you for using NZaoCard! If you like this project, please give us a ⭐ on GitHub.
 
 ---
 

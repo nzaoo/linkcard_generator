@@ -69,9 +69,9 @@ export default function UserCardPage() {
   return (
     <>
       <Head>
-        <title>{user.name} - IntroCard</title>
+        <title>{user.name} - NZaoCard</title>
         <meta name="description" content={user.bio || `Thẻ giới thiệu của ${user.name}`} />
-        <meta property="og:title" content={`${user.name} - IntroCard`} />
+        <meta property="og:title" content={`${user.name} - NZaoCard`} />
         <meta property="og:description" content={user.bio || `Thẻ giới thiệu của ${user.name}`} />
         <meta property="og:image" content={user.avatar || "/default-avatar.png"} />
       </Head>

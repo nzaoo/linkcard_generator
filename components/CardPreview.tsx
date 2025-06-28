@@ -158,7 +158,7 @@ export default function CardPreview({
         {!isPreview && (
           <div className="text-center mt-6 pt-6 border-t border-gray-200">
             <p className="text-sm text-gray-500">
-              Được tạo bởi <span className="font-semibold text-indigo-600">IntroCard</span>
+              Được tạo bởi <span className="font-semibold text-indigo-600">NZaoCard</span>
             </p>
           </div>
         )}
