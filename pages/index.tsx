@@ -84,7 +84,7 @@ export default function Home() {
       }, 1500)
     } catch (error) {
       console.error('Error creating card:', error)
-      showError('Có lỗi xảy ra khi tạo thẻ. Vui lòng thử lại!')
+      showError('An error occurred while creating the card. Please try again later.')
     } finally {
       setIsLoading(false)
     }

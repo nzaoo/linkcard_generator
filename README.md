@@ -1,6 +1,9 @@
 # 🌟 LinkCard Generator (NZaoCard) – Digital Personal Card
 
 <p align="center">
+  <a href="https://linkcard-psi.vercel.app/">
+    <img src="https://img.shields.io/badge/NZaoCard-🚀%20Personal%20Card%20Generator-cyan?style=for-the-badge&logo=next.js" alt="NZaoCard Badge" />
+  </a>
   <img src="https://img.shields.io/github/stars/nzaoo/linkcard_generator?style=for-the-badge" />
   <img src="https://img.shields.io/github/issues/nzaoo/linkcard_generator?style=for-the-badge" />
   <img src="https://img.shields.io/github/license/nzaoo/linkcard_generator?style=for-the-badge" />
@@ -32,17 +35,7 @@
 
 ---
 
-## 🖼️ Screenshots
-
-> Replace the image URLs with your GitHub Issue image links or your preferred hosting.
-
-| Homepage & Card Creation                                                           | Live Card Preview                                                                 |
-| ---------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
-| ![Homepage](https://github.com/nzaoo/linkcard_generator/issues/1#issuecomment-xxx) | ![Preview](https://github.com/nzaoo/linkcard_generator/issues/1#issuecomment-yyy) |
-
----
-
-## ✨ Features
+## 🎨 Features
 
 - Modern, responsive UI/UX with beautiful animations
 - Live card preview as you edit
