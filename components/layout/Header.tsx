@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import Link from 'next/link'
+import { HeaderProps } from '@/types'
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
