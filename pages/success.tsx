@@ -24,6 +24,18 @@ export default function SuccessPage() {
   const [user, setUser] = useState<any>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [showConfetti, setShowConfetti] = useState(false)
+  const [isClient, setIsClient] = useState(false)
+  const [cardUrl, setCardUrl] = useState('')
+
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
+
+  useEffect(() => {
+    if (isClient && typeof window !== 'undefined') {
+      setCardUrl(`${window.location.origin}/u/${slug}`)
+    }
+  }, [isClient, slug])
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -36,10 +48,13 @@ export default function SuccessPage() {
         if (!querySnapshot.empty) {
           const userData = querySnapshot.docs[0].data()
           setUser(userData)
-          setShowConfetti(true)
-
-          // Hide confetti after 3 seconds
-          setTimeout(() => setShowConfetti(false), 3000)
+          
+          // Only show confetti on client-side
+          if (isClient) {
+            setShowConfetti(true)
+            // Hide confetti after 3 seconds
+            setTimeout(() => setShowConfetti(false), 3000)
+          }
 
           // Track success event
           if (typeof window !== 'undefined' && window.gtag) {
@@ -60,7 +75,7 @@ export default function SuccessPage() {
     }
 
     fetchUser()
-  }, [slug])
+  }, [slug, isClient])
 
   if (isLoading) {
     return <FullScreenLoading text="Loading your card..." />
@@ -86,7 +101,6 @@ export default function SuccessPage() {
     )
   }
 
-  const cardUrl = typeof window !== 'undefined' ? `${window.location.origin}/u/${slug}` : ''
   const shareTitle = `Check out ${user.name}'s card!`
   const shareDescription = user.bio || `Personal introduction card of ${user.name}`
 
@@ -102,7 +116,7 @@ export default function SuccessPage() {
 
       <div className="min-h-screen dark-gradient-bg starry-bg shooting-stars relative overflow-hidden">
         {/* Confetti Animation */}
-        {showConfetti && (
+        {isClient && showConfetti && (
           <div className="fixed inset-0 pointer-events-none z-50">
             {[...Array(50)].map((_, i) => (
               <div
@@ -131,7 +145,7 @@ export default function SuccessPage() {
         </div>
 
         {/* Floating bubbles */}
-        {[...Array(20)].map((_, i) => (
+        {isClient && [...Array(20)].map((_, i) => (
           <div
             key={i}
             className="bubble"
