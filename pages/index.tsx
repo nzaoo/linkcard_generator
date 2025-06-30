@@ -441,7 +441,7 @@ export default function Home() {
                   onClick={() => window.open('https://github.com/nzaoo/linkcard_generator', '_blank')}
                   className="bg-white/20 backdrop-blur-lg text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-white/30 transition-all duration-200 border border-white/30"
                 >
-                  ⭐ Give us a Star
+                  ⭐ Give me a Star
                 </button>
               </div>
             </div>
