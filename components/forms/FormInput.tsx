@@ -1,15 +1,5 @@
 import { useState } from 'react'
-
-interface FormInputProps {
-  label: string
-  value: string
-  onChange: (value: string) => void
-  error?: string
-  onErrorClear: () => void
-  placeholder?: string
-  type?: 'text' | 'textarea' | 'url'
-  required?: boolean
-}
+import { FormInputProps } from '@/types'
 
 export default function FormInput({
   label,
