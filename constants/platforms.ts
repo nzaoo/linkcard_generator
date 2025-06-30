@@ -24,6 +24,30 @@ export const SOCIAL_PLATFORMS = {
   MESSENGER: 'messenger'
 } as const
 
+export const SOCIAL_PLATFORMS_LIST = [
+  { key: 'facebook', name: 'Facebook', icon: '📘', placeholder: 'https://facebook.com/username' },
+  { key: 'instagram', name: 'Instagram', icon: '📷', placeholder: 'https://instagram.com/username' },
+  { key: 'twitter', name: 'Twitter/X', icon: '🐦', placeholder: 'https://twitter.com/username' },
+  { key: 'linkedin', name: 'LinkedIn', icon: '💼', placeholder: 'https://linkedin.com/in/username' },
+  { key: 'youtube', name: 'YouTube', icon: '📺', placeholder: 'https://youtube.com/@username' },
+  { key: 'tiktok', name: 'TikTok', icon: '🎵', placeholder: 'https://tiktok.com/@username' },
+  { key: 'github', name: 'GitHub', icon: '💻', placeholder: 'https://github.com/username' },
+  { key: 'website', name: 'Website', icon: '🌐', placeholder: 'https://yourwebsite.com' },
+  { key: 'email', name: 'Email', icon: '📧', placeholder: 'your.email@example.com' },
+  { key: 'phone', name: 'Phone', icon: '📞', placeholder: '+84 123 456 789' },
+  { key: 'whatsapp', name: 'WhatsApp', icon: '💬', placeholder: '+84 123 456 789' },
+  { key: 'telegram', name: 'Telegram', icon: '📱', placeholder: '@username' },
+  { key: 'discord', name: 'Discord', icon: '🎮', placeholder: 'username#1234' },
+  { key: 'spotify', name: 'Spotify', icon: '🎵', placeholder: 'https://open.spotify.com/user/username' },
+  { key: 'behance', name: 'Behance', icon: '🎨', placeholder: 'https://behance.net/username' },
+  { key: 'dribbble', name: 'Dribbble', icon: '🏀', placeholder: 'https://dribbble.com/username' },
+  { key: 'pinterest', name: 'Pinterest', icon: '📌', placeholder: 'https://pinterest.com/username' },
+  { key: 'snapchat', name: 'Snapchat', icon: '👻', placeholder: 'username' },
+  { key: 'twitch', name: 'Twitch', icon: '🎮', placeholder: 'https://twitch.tv/username' },
+  { key: 'zalo', name: 'Zalo', icon: '💙', placeholder: 'https://zalo.me/username' },
+  { key: 'messenger', name: 'Messenger', icon: '💬', placeholder: 'https://m.me/username' }
+]
+
 export const PLATFORM_ICONS: Record<string, string> = {
   [SOCIAL_PLATFORMS.FACEBOOK]: '📘',
   [SOCIAL_PLATFORMS.INSTAGRAM]: '📷',

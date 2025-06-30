@@ -5,9 +5,6 @@ const nextConfig = {
   images: {
     domains: ['localhost', 'vercel.app', 'your-domain.com'],
   },
-  env: {
-    CUSTOM_KEY: process.env.CUSTOM_KEY,
-  },
   async headers() {
     return [
       {
