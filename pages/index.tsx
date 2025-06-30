@@ -1,5 +1,5 @@
 // pages/index.tsx
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { db } from '@/lib/firebase'
 import { addDoc, collection } from 'firebase/firestore'
@@ -28,6 +28,11 @@ export default function Home() {
   const [socialLinks, setSocialLinks] = useState<SocialLink[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [errors, setErrors] = useState<{ [key: string]: string }>({})
+  const [isClient, setIsClient] = useState(false)
+
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
 
   const getInitials = (fullName: string) => {
     return fullName
@@ -119,7 +124,7 @@ export default function Home() {
         </div>
 
         {/* Floating bubbles */}
-        {[...Array(15)].map((_, i) => (
+        {isClient && [...Array(15)].map((_, i) => (
           <div
             key={i}
             className="bubble"
