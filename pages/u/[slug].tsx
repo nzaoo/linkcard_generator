@@ -1,83 +1,122 @@
 // pages/u/[slug].tsx
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import { db } from "@/lib/firebase";
-import { collection, query, where, getDocs } from "firebase/firestore";
-import CardPreview from "@/components/CardPreview";
-import Head from "next/head";
+import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
+import { db } from '@/lib/firebase'
+import { collection, query, where, getDocs } from 'firebase/firestore'
+import CardPreview from '@/components/CardPreview'
+import ShareButton from '@/components/ShareButton'
+import { ErrorBoundary } from '@/components/ErrorBoundary'
+import { FullScreenLoading } from '@/components/LoadingSpinner'
+import { useToast, ToastContainer } from '@/components/Toast'
+import Head from 'next/head'
 
 export default function UserCardPage() {
-  const router = useRouter();
-  const { slug } = router.query;
+  const router = useRouter()
+  const { slug } = router.query
+  const { toasts, removeToast, showSuccess } = useToast()
 
-  const [user, setUser] = useState<any>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [user, setUser] = useState<any>(null)
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     const fetchUser = async () => {
-      if (!slug) return;
+      if (!slug) return
 
       try {
-        const q = query(collection(db, "cards"), where("slug", "==", slug));
-        const querySnapshot = await getDocs(q);
+        const q = query(collection(db, 'cards'), where('slug', '==', slug))
+        const querySnapshot = await getDocs(q)
 
         if (!querySnapshot.empty) {
-          setUser(querySnapshot.docs[0].data());
+          const userData = querySnapshot.docs[0].data()
+          setUser(userData)
+
+          // Track page view for analytics
+          if (typeof window !== 'undefined' && window.gtag) {
+            window.gtag('event', 'page_view', {
+              page_title: `${userData.name} - NZaoCard`,
+              page_location: window.location.href
+            })
+          }
         } else {
-          setUser(undefined);
+          setUser(undefined)
         }
       } catch (error) {
-        console.error("Error fetching user:", error);
-        setUser(undefined);
+        console.error('Error fetching user:', error)
+        setUser(undefined)
       } finally {
-        setIsLoading(false);
+        setIsLoading(false)
       }
-    };
+    }
 
-    fetchUser();
-  }, [slug]);
+    fetchUser()
+  }, [slug])
 
   if (isLoading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-white mx-auto mb-4"></div>
-          <p className="text-white text-lg">Đang tải thẻ giới thiệu...</p>
-        </div>
-      </div>
-    );
+    return <FullScreenLoading text="Loading your card..." />
   }
 
   if (user === undefined) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-red-500 to-pink-500 flex items-center justify-center p-4">
-        <div className="text-center bg-white/10 backdrop-blur-lg rounded-2xl p-8 border border-white/20">
+      <div className="min-h-screen dark-gradient-bg starry-bg shooting-stars flex items-center justify-center p-4">
+        <div className="text-center glass-card rounded-2xl p-8 border border-white/20 relative z-10 max-w-md">
           <div className="text-6xl mb-4">😔</div>
-          <h1 className="text-2xl font-bold text-white mb-2">Không tìm thấy</h1>
-          <p className="text-white/80 mb-6">Thẻ giới thiệu này không tồn tại hoặc đã bị xóa.</p>
+          <h1 className="text-2xl font-bold text-white mb-2">Card Not Found</h1>
+          <p className="text-white/80 mb-6">
+            This card doesn't exist or has been removed. Create your own beautiful card!
+          </p>
           <button
             onClick={() => router.push('/')}
-            className="bg-white text-purple-600 px-6 py-3 rounded-full font-semibold hover:bg-gray-100 transition"
+            className="bg-gradient-to-r from-yellow-400 to-orange-500 text-gray-900 px-6 py-3 rounded-full font-semibold hover:from-yellow-500 hover:to-orange-600 transition-all duration-200 transform hover:scale-105"
           >
-            Tạo thẻ mới
+            ✨ Create Your Card
           </button>
         </div>
       </div>
-    );
+    )
   }
 
+  const cardUrl = typeof window !== 'undefined' ? window.location.href : ''
+  const shareTitle = `Check out ${user.name}'s card!`
+  const shareDescription = user.bio || `Personal introduction card of ${user.name}`
+
   return (
-    <>
+    <ErrorBoundary>
       <Head>
         <title>{user.name} - NZaoCard</title>
-        <meta name="description" content={user.bio || `Thẻ giới thiệu của ${user.name}`} />
+        <meta name="description" content={user.bio || `Personal introduction card of ${user.name}`} />
+        <meta name="keywords" content={`${user.name}, personal card, digital business card, introduction`} />
+
+        {/* Open Graph */}
+        <meta property="og:type" content="profile" />
         <meta property="og:title" content={`${user.name} - NZaoCard`} />
-        <meta property="og:description" content={user.bio || `Thẻ giới thiệu của ${user.name}`} />
-        <meta property="og:image" content={user.avatar || "/default-avatar.png"} />
+        <meta property="og:description" content={user.bio || `Personal introduction card of ${user.name}`} />
+        <meta property="og:image" content={user.avatar || '/default-avatar.png'} />
+        <meta property="og:url" content={cardUrl} />
+
+        {/* Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={`${user.name} - NZaoCard`} />
+        <meta name="twitter:description" content={user.bio || `Personal introduction card of ${user.name}`} />
+        <meta name="twitter:image" content={user.avatar || '/default-avatar.png'} />
+
+        {/* Structured Data */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Person",
+              "name": user.name,
+              "description": user.bio,
+              "url": cardUrl,
+              "sameAs": user.links?.map((link: any) => link.url) || []
+            })
+          }}
+        />
       </Head>
 
-      <div className="min-h-screen bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 relative overflow-hidden">
-        {/* Animated background elements */}
+      <div className="min-h-screen dark-gradient-bg starry-bg shooting-stars relative overflow-hidden">
+        {/* Enhanced animated background elements */}
         <div className="absolute inset-0 -z-10">
           <div className="absolute w-32 h-32 bg-white/10 rounded-full top-[10%] left-[10%] animate-float"></div>
           <div className="absolute w-24 h-24 bg-white/10 rounded-full top-[60%] right-[20%] animate-float delay-300"></div>
@@ -85,7 +124,22 @@ export default function UserCardPage() {
           <div className="absolute w-20 h-20 bg-white/10 rounded-full top-[30%] right-[60%] animate-float delay-900"></div>
         </div>
 
-        <div className="flex items-center justify-center min-h-screen p-4">
+        {/* Floating bubbles */}
+        {[...Array(20)].map((_, i) => (
+          <div
+            key={i}
+            className="bubble"
+            style={{
+              left: `${Math.random() * 100}%`,
+              width: `${Math.random() * 20 + 10}px`,
+              height: `${Math.random() * 20 + 10}px`,
+              animationDelay: `${Math.random() * 8}s`,
+              animationDuration: `${Math.random() * 4 + 6}s`
+            }}
+          />
+        ))}
+
+        <div className="flex items-center justify-center min-h-screen p-4 relative z-10">
           <div className="w-full max-w-md">
             {/* Main Card */}
             <CardPreview
@@ -101,14 +155,48 @@ export default function UserCardPage() {
             <div className="text-center mt-8 animate-fade-in" style={{ animationDelay: '400ms' }}>
               <button
                 onClick={() => router.push('/')}
-                className="bg-white/20 backdrop-blur-lg text-white px-6 py-3 rounded-full font-semibold hover:bg-white/30 transition-all duration-200 border border-white/30"
+                className="glass-card text-white px-8 py-4 rounded-full font-semibold hover:bg-white/30 transition-all duration-200 border border-white/30 transform hover:scale-105"
               >
-                Tạo thẻ của riêng bạn
+                ✨ Create Your Own Card
               </button>
+            </div>
+
+            {/* Share section */}
+            <div className="text-center mt-6 animate-fade-in" style={{ animationDelay: '600ms' }}>
+              <p className="text-white/70 text-sm mb-3">Share this card</p>
+              <ShareButton
+                url={cardUrl}
+                title={shareTitle}
+                description={shareDescription}
+              />
+            </div>
+
+            {/* Stats */}
+            <div className="text-center mt-6 animate-fade-in" style={{ animationDelay: '800ms' }}>
+              <div className="glass-card rounded-xl p-4 border border-white/20">
+                <p className="text-white/60 text-xs mb-2">Powered by</p>
+                <div className="flex items-center justify-center space-x-2">
+                  <div className="w-6 h-6 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-lg flex items-center justify-center text-gray-900 font-bold text-sm">
+                    N
+                  </div>
+                  <span className="text-white/80 text-sm font-medium">NZaoCard</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
+
+        {/* Floating Share Button */}
+        <ShareButton
+          url={cardUrl}
+          title={shareTitle}
+          description={shareDescription}
+          className="fixed bottom-6 right-6 z-50 animate-bounce"
+        />
       </div>
-    </>
-  );
+
+      {/* Toast Notifications */}
+      <ToastContainer toasts={toasts} removeToast={removeToast} />
+    </ErrorBoundary>
+  )
 }
