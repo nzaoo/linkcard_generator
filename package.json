@@ -1,12 +1,16 @@
 {
   "name": "nzaocard",
-  "version": "0.1.0",
+  "version": "1.0.0",
+  "description": "Create beautiful personal introduction cards with stunning animations and professional design",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "type-check": "tsc --noEmit",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "dependencies": {
     "next": "14.0.4",
@@ -23,6 +27,29 @@
     "postcss": "^8",
     "tailwindcss": "^3.3.0",
     "eslint": "^8",
-    "eslint-config-next": "14.0.4"
-  }
+    "eslint-config-next": "14.0.4",
+    "prettier": "^3.0.0"
+  },
+  "keywords": [
+    "digital-business-card",
+    "personal-card",
+    "link-in-bio",
+    "social-media-links",
+    "portfolio",
+    "nextjs",
+    "react",
+    "typescript",
+    "tailwindcss",
+    "firebase"
+  ],
+  "author": "Nzaoo <nzao1327@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nzaoo/linkcard_generator.git"
+  },
+  "bugs": {
+    "url": "https://github.com/nzaoo/linkcard_generator/issues"
+  },
+  "homepage": "https://linkcardgenerator.vercel.app"
 }
