@@ -300,7 +300,7 @@ export default function SuccessPage() {
                   <div className="text-3xl mb-3">📱</div>
                   <h4 className="font-semibold text-white mb-2">Add to Home Screen</h4>
                   <p className="text-white/70 text-sm">
-                    Save your card to your phone's home screen for quick access
+                    Save your card to your phone&#39;s home screen for quick access
                   </p>
                 </div>
                 <div className="text-center">
