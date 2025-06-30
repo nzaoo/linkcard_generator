@@ -1,22 +1,47 @@
 import '@/styles/globals.css'
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
+
+// Type declarations for analytics
+declare global {
+  interface Window {
+    dataLayer?: any[]
+    gtag?: (...args: any[]) => void
+  }
+}
 
 export default function App({ Component, pageProps }: AppProps) {
+  const [isClient, setIsClient] = useState(false)
+
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
+
+  // Prevent hydration mismatch
+  if (!isClient) {
+    return null
+  }
+
   // Analytics setup
   useEffect(() => {
-    // Google Analytics (if you have GA4)
-    if (typeof window !== 'undefined' && process.env.NEXT_PUBLIC_GA_ID) {
-      const script = document.createElement('script')
-      script.src = `https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`
-      script.async = true
-      document.head.appendChild(script)
-
+    if (typeof window !== 'undefined') {
+      // Initialize dataLayer
       window.dataLayer = window.dataLayer || []
-      function gtag(...args: any[]) {
-        window.dataLayer.push(args)
+      
+      // Define gtag function
+      const gtag = function(...args: any[]) {
+        window.dataLayer?.push(args)
       }
+      window.gtag = gtag
+      
+      // Load Google Analytics
+      const script = document.createElement('script')
+      script.async = true
+      script.src = `https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`
+      document.head.appendChild(script)
+      
+      // Initialize GA
       gtag('js', new Date())
       gtag('config', process.env.NEXT_PUBLIC_GA_ID)
     }
