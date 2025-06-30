@@ -1,135 +1,143 @@
-# LinkCard Generator
+# LinkCard Generator (NZaoCard)
 
-[![Next.js](https://img.shields.io/badge/Next.js-14.0.4-black?style=flat-square&logo=next.js)](https://nextjs.org/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.3.0-38B2AC?style=flat-square&logo=tailwind-css)](https://tailwindcss.com/)
-[![Firebase](https://img.shields.io/badge/Firebase-10.7.1-orange?style=flat-square&logo=firebase)](https://firebase.google.com/)
-[![MIT License](https://img.shields.io/badge/License-MIT-green?style=flat-square)](LICENSE)
+<p align="center">
+  <img src="public/logo.png" alt="LinkCard Generator Logo" width="180" />
+</p>
+
+<p align="center">
+  <i>Create and share beautiful personal link cards easily.</i>
+</p>
+
+<p align="center">
+  <img src="public/demo.gif" alt="Demo GIF" width="600" />
+</p>
 
 ---
 
 ## 🚀 Introduction
 
-**LinkCard Generator** is a modern web application that allows users to create and share beautiful personal link cards. Built with Next.js, TypeScript, Tailwind CSS, and Firebase, it offers a seamless and responsive user experience for digital networking.
+**LinkCard Generator (NZaoCard)** is a web application that helps you create beautiful digital business cards with modern design, stunning animations, and easy sharing via a unique link. It supports multiple social platforms, is mobile-optimized, secure, and blazing fast.
 
 ---
 
 ## ✨ Features
 
-- **Modern UI/UX**: Clean, responsive, and mobile-friendly design
-- **Live Card Preview**: Instantly see your card as you edit
-- **Rich Social Links**: Support for multiple social platforms
-- **Easy Sharing**: Share your card via a unique URL
-- **Success Page**: Dedicated page with sharing options
-- **Statistics**: Track card views and shares (optional)
-- **Error Handling**: User-friendly notifications and error boundaries
-- **Fast & Secure**: Powered by Next.js and Firebase
+- Modern, responsive UI/UX with beautiful animations
+- Live card preview as you edit
+- Supports many social platforms (Facebook, Instagram, Twitter, LinkedIn, GitHub, Zalo, etc.)
+- Easy sharing with a personalized URL
+- Secure data storage with Firebase
+- SEO optimized, Open Graph & Twitter Card support
+- Easy deployment to Vercel or any Next.js-compatible platform
 
 ---
 
-## 📁 Folder Structure
+## 🏗️ Project Structure
 
 ```
 linkcard_generator/
-  components/
-    Card/
-      CardPreview.tsx
-      CardPreviewNew.tsx
-    Form/
-      FormInput.tsx
-      SocialLinks.tsx
-  constants/
-    platforms.ts
-  lib/
-    firebase.ts
-  pages/
-    _app.tsx
-    index.tsx
-    success.tsx
-    u/
-      [slug].tsx
-  public/
-    default-avatar.png
-  styles/
-    globals.css
-  utils/
-    generateSlug.ts
-  types/
-    index.ts
-  README.md
-  package.json
-  ...
+├── components/         # UI components (Card, Form, SocialLinks, ...)
+├── constants/          # Social platform list, icons, colors
+├── lib/                # Firebase configuration
+├── pages/              # Main pages (index, success, [slug])
+├── public/             # Default avatar, logo, demo images
+├── styles/             # CSS, custom animations, theme
+├── types/              # TypeScript type definitions
+├── utils/              # Utility functions (generateSlug, ...)
+├── tailwind.config.js  # Tailwind CSS configuration
+├── vercel.json         # Vercel deployment config
+└── ...
 ```
 
 ---
 
-## ⚡ Getting Started
+## ⚡ Quick Start
 
-### Prerequisites
+1. **Clone & Install**
 
-- Node.js >= 18
-- npm or yarn
-- Firebase project (for backend)
-
-### Installation
-
-1. **Clone the repository:**
    ```bash
    git clone https://github.com/nzaoo/linkcard_generator.git
    cd linkcard_generator
-   ```
-2. **Install dependencies:**
-   ```bash
    npm install
-   # or
-   yarn install
+   # or: yarn install
    ```
-3. **Configure Firebase:**
-   - Update `lib/firebase.ts` with your Firebase project credentials.
-   - (Optional) Add environment variables if needed.
+
+2. **Configure Firebase**
+   - Create a project on [Firebase](https://console.firebase.google.com/)
+   - Get your config (API Key, Project ID, etc.)
+   - Create a `.env.local` file and add:
+     ```
+     NEXT_PUBLIC_FIREBASE_API_KEY=...
+     NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=...
+     NEXT_PUBLIC_FIREBASE_PROJECT_ID=...
+     NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=...
+     NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=...
+     NEXT_PUBLIC_FIREBASE_APP_ID=...
+     ```
+   - Or edit `lib/firebase.ts` directly (not recommended)
+
+3. **Run the App**
+   ```bash
+   npm run dev
+   ```
+   Visit [http://localhost:3000](http://localhost:3000)
 
 ---
 
-## 🛠️ Usage
+## 🖼️ Demo
 
-### Development
-
-Start the development server:
-
-```bash
-npm run dev
-```
-
-Visit [http://localhost:3000](http://localhost:3000) in your browser.
-
-### Production
-
-Build and run for production:
-
-```bash
-npm run build
-npm start
-```
+- Live: [linkcard-generator.vercel.app](https://linkcard-generator.vercel.app)
+- Create, share, and preview your card instantly.
 
 ---
 
 ## ☁️ Deployment
 
-You can deploy this project to [Vercel](https://vercel.com/) or any platform that supports Next.js.
+- Easily deploy to [Vercel](https://vercel.com/) (pre-configured with `vercel.json`)
+- Supports Next.js 14+, TypeScript, TailwindCSS
 
 ---
 
-## 🤝 Contribution Guidelines
+## 🛠️ Development Scripts
 
-We welcome contributions from the community!
+| Script               | Description                          |
+| -------------------- | ------------------------------------ |
+| `npm run dev`        | Start development server (localhost) |
+| `npm run build`      | Build for production                 |
+| `npm run start`      | Run production build                 |
+| `npm run lint`       | Lint code with ESLint                |
+| `npm run type-check` | Type check with TypeScript           |
+| `npm run format`     | Format code with Prettier            |
 
-1. Fork the repository and create a new branch from `main`.
-2. Make your changes with clear, descriptive commit messages (in English).
-3. Ensure your code follows the existing style and passes lint/type checks.
-4. Submit a pull request with a detailed description of your changes.
+---
+
+## 🧩 Tech Stack
+
+- [Next.js](https://nextjs.org/) (React, SSR/SSG)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Tailwind CSS](https://tailwindcss.com/) (custom animation, dark mode)
+- [Firebase](https://firebase.google.com/) (Firestore)
+- [Vercel](https://vercel.com/) (deployment)
+- UI/UX: Responsive, animated, glassmorphism, gradients, particles, confetti, ...
+
+---
+
+## 🧑‍💻 Contributing
+
+- Fork & branch from `main`
+- Commit code following the style guide, with clear messages
+- Open a pull request with a detailed description
+- See [CONTRIBUTING.md](CONTRIBUTING.md) for more
 
 ---
 
 ## 📄 License
 
-This project is licensed under the [MIT License](LICENSE).
+[MIT](LICENSE)
+
+---
+
+## 📬 Contact & Support
+
+- Author: Nzaoo (nzao1327@gmail.com)
+- [Github Issues](https://github.com/nzaoo/linkcard_generator/issues)
