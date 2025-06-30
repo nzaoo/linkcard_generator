@@ -8,8 +8,8 @@ export function useToast() {
   return {
     toasts: [],
     removeToast: () => {},
-    showSuccess: () => {},
-    showError: () => {},
+    showSuccess: (msg?: string) => {},
+    showError: (msg?: string) => {},
   };
 }
 
