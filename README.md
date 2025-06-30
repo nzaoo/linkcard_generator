@@ -31,7 +31,18 @@
 **LinkCard Generator (NZaoCard)** is a modern web application that lets you create beautiful digital personal cards with stunning animations, professional design, and seamless sharing. Supports 20+ social platforms, mobile-optimized, secure, and blazing fast.
 
 ---
-✨ Features
+
+## 🖼️ Screenshots
+
+> Replace the image URLs with your GitHub Issue image links or your preferred hosting.
+
+| Homepage & Card Creation                                                           | Live Card Preview                                                                 |
+| ---------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| ![Homepage](https://github.com/nzaoo/linkcard_generator/issues/1#issuecomment-xxx) | ![Preview](https://github.com/nzaoo/linkcard_generator/issues/1#issuecomment-yyy) |
+
+---
+
+## ✨ Features
 
 - Modern, responsive UI/UX with beautiful animations
 - Live card preview as you edit
