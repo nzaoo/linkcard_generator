@@ -1,5 +1,22 @@
 import { createContext, useContext, useState, ReactNode, useEffect } from 'react'
-import { ToastContextType, ToastProps } from '@/types'
+import { ToastProps } from '@/types'
+
+export type ToastType = 'success' | 'error' | 'warning' | 'info'
+
+export interface ToastContextType {
+  toasts: Array<{
+    id: string
+    message: string
+    type: ToastType
+    duration?: number
+  }>
+  addToast: (message: string, type?: ToastType, duration?: number) => void
+  removeToast: (id: string) => void
+  showSuccess: (message: string, duration?: number) => void
+  showError: (message: string, duration?: number) => void
+  showWarning: (message: string, duration?: number) => void
+  showInfo: (message: string, duration?: number) => void
+}
 
 const ToastContext = createContext<ToastContextType | undefined>(undefined)
 
@@ -33,8 +50,6 @@ export function ToastProvider({ children }: { children: ReactNode }) {
     </ToastContext.Provider>
   )
 }
-
-export type ToastType = 'success' | 'error' | 'warning' | 'info'
 
 // Hook for managing toasts
 export function useToast() {
