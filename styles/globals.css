@@ -54,16 +54,43 @@
   }
 }
 
-/* Dark theme animations from nzao_card */
+/* Enhanced animations from nzao_card */
 @keyframes gradient-bg {
   0% {
     background-position: 0% 50%;
   }
-  50% {
+  25% {
     background-position: 100% 50%;
+  }
+  50% {
+    background-position: 100% 100%;
+  }
+  75% {
+    background-position: 0% 100%;
   }
   100% {
     background-position: 0% 50%;
+  }
+}
+
+@keyframes twinkleStars {
+  0%,
+  100% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes shootingStars {
+  0% {
+    background-position: -300px 80px, -250px 200px, -280px 350px, -200px 450px, -320px 150px,
+      -180px 300px;
+  }
+  100% {
+    background-position: 1200px 680px, 1150px 800px, 1180px 950px, 1100px 1050px, 1200px 750px,
+      1120px 900px;
   }
 }
 
@@ -97,6 +124,20 @@
   }
 }
 
+@keyframes bubbleFloat {
+  0% {
+    transform: translateY(100vh) scale(0);
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(-100px) scale(1);
+    opacity: 0;
+  }
+}
+
 /* Custom utility classes */
 .animate-float {
   animation: float 6s ease-in-out infinite;
@@ -118,11 +159,68 @@
   animation: scaleIn 0.4s ease-out;
 }
 
-/* Dark theme classes */
+.animate-twinkle {
+  animation: twinkleStars 6s ease-in-out infinite;
+}
+
+.animate-bubble {
+  animation: bubbleFloat 8s linear infinite;
+}
+
+/* Enhanced dark theme classes */
 .dark-gradient-bg {
-  background: linear-gradient(-45deg, #000000, #111111, #1a1a1a, #000000);
+  background: linear-gradient(-45deg, #000000, #0a0a0a, #1a1a1a, #0d0d0d, #000000);
   background-size: 400% 400%;
-  animation: gradient-bg 10s ease infinite;
+  animation: gradient-bg 15s ease infinite;
+}
+
+/* Twinkling stars background */
+.starry-bg::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(2px 2px at 20px 30px, #fff, transparent),
+    radial-gradient(2px 2px at 40px 70px, rgba(255, 255, 255, 0.9), transparent),
+    radial-gradient(1px 1px at 90px 40px, #fff, transparent),
+    radial-gradient(1px 1px at 130px 80px, rgba(255, 255, 255, 0.7), transparent),
+    radial-gradient(2px 2px at 160px 30px, #ddd, transparent),
+    radial-gradient(1px 1px at 200px 60px, rgba(255, 255, 255, 0.8), transparent),
+    radial-gradient(3px 3px at 250px 20px, #fff, transparent),
+    radial-gradient(1px 1px at 300px 90px, rgba(255, 255, 255, 0.6), transparent);
+  background-repeat: repeat;
+  background-size: 350px 200px;
+  animation: twinkleStars 6s ease-in-out infinite;
+  z-index: -3;
+}
+
+/* Shooting stars background */
+.shooting-stars::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+      135deg,
+      transparent 30%,
+      rgba(255, 255, 255, 0.9) 50%,
+      transparent 70%
+    ),
+    linear-gradient(-135deg, transparent 30%, rgba(255, 215, 0, 0.7) 50%, transparent 70%),
+    linear-gradient(120deg, transparent 30%, rgba(255, 255, 255, 0.8) 50%, transparent 70%),
+    linear-gradient(-120deg, transparent 30%, rgba(255, 215, 0, 0.6) 50%, transparent 70%),
+    linear-gradient(150deg, transparent 30%, rgba(255, 255, 255, 0.7) 50%, transparent 70%),
+    linear-gradient(-150deg, transparent 30%, rgba(255, 215, 0, 0.5) 50%, transparent 70%);
+  background-size: 300px 3px, 250px 2px, 280px 2.5px, 200px 1.5px, 320px 2px, 180px 1px;
+  background-position: -300px 80px, -250px 200px, -280px 350px, -200px 450px, -320px 150px,
+    -180px 300px;
+  background-repeat: no-repeat;
+  animation: shootingStars 12s linear infinite;
+  z-index: -2;
 }
 
 .glass-card {
@@ -175,7 +273,7 @@ html {
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-/* Gradient text */
+/* Enhanced gradient text */
 .gradient-text {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   -webkit-background-clip: text;
@@ -183,12 +281,20 @@ html {
   background-clip: text;
 }
 
-/* Dark theme specific styles */
+.gold-gradient-text {
+  background: linear-gradient(135deg, #ffd700 0%, #ffa500 50%, #ff6347 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Enhanced dark theme specific styles */
 .dark-card {
   background: rgba(30, 30, 30, 0.85);
   backdrop-filter: blur(20px) saturate(180%);
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.05);
+  transition: all 0.3s ease;
 }
 
 .dark-card:hover {
@@ -198,9 +304,37 @@ html {
   border-color: rgba(255, 215, 0, 0.3);
 }
 
-.gold-gradient-text {
-  background: linear-gradient(to right, #ffd700, #ff8a00, #ff0080);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+/* Bubble effects */
+.bubble {
+  position: absolute;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+  animation: bubbleFloat 8s linear infinite;
+}
+
+/* Loading animation */
+.loading-dots {
+  display: inline-block;
+}
+
+.loading-dots::after {
+  content: '';
+  animation: loadingDots 1.5s infinite;
+}
+
+@keyframes loadingDots {
+  0%,
+  20% {
+    content: '';
+  }
+  40% {
+    content: '.';
+  }
+  60% {
+    content: '..';
+  }
+  80%,
+  100% {
+    content: '...';
+  }
 }
