@@ -67,9 +67,11 @@ export interface SuccessNotificationProps {
 }
 
 export interface ToastProps {
-  message: string
-  type: 'success' | 'error' | 'info' | 'warning'
-  onClose: () => void
+  onClose: () => void;
+  id: string;
+  message: string;
+  type: ToastType;
+  duration?: number;
 }
 
 export interface LoadingSpinnerProps {
