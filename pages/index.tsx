@@ -428,12 +428,14 @@ export default function Home() {
                 >
                   🚀 Create My Card Now
                 </button>
-                <button
-                  onClick={() => window.open('https://github.com/nzaoo/linkcard_generator', '_blank')}
+                <a
+                  href="https://github.com/nzaoo/linkcard_generator"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="bg-white/20 backdrop-blur-lg text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-white/30 transition-all duration-200 border border-white/30"
                 >
                   ⭐ Give me a Star
-                </button>
+                </a>
               </div>
             </div>
           </section>
