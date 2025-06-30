@@ -1,6 +1,5 @@
 import React from 'react'
 import Link from 'next/link'
-import { FooterProps } from '@/types'
 
 export default function Footer() {
   const currentYear = new Date().getFullYear()
