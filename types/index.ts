@@ -1,3 +1,5 @@
+import type { ToastType } from '@/components/ui/Toast'
+
 // Common interfaces used throughout the application
 
 export interface SocialLink {
