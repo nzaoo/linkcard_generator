@@ -24,6 +24,12 @@ export default function UserCardPage() {
 
   const [user, setUser] = useState<any>(null)
   const [isLoading, setIsLoading] = useState(true)
+  const [isClient, setIsClient] = useState(false)
+  const [cardUrl, setCardUrl] = useState('')
+
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -37,8 +43,8 @@ export default function UserCardPage() {
           const userData = querySnapshot.docs[0].data()
           setUser(userData)
 
-          // Track page view for analytics
-          if (typeof window !== 'undefined' && window.gtag) {
+          // Track page view for analytics - only on client-side
+          if (isClient && typeof window !== 'undefined' && window.gtag) {
             window.gtag('event', 'page_view', {
               page_title: `${userData.name} - NZaoCard`,
               page_location: window.location.href
@@ -56,7 +62,13 @@ export default function UserCardPage() {
     }
 
     fetchUser()
-  }, [slug])
+  }, [slug, isClient])
+
+  useEffect(() => {
+    if (isClient && typeof window !== 'undefined') {
+      setCardUrl(window.location.href)
+    }
+  }, [isClient])
 
   if (isLoading) {
     return <FullScreenLoading text="Loading your card..." />
@@ -82,7 +94,6 @@ export default function UserCardPage() {
     )
   }
 
-  const cardUrl = typeof window !== 'undefined' ? window.location.href : ''
   const shareTitle = `Check out ${user.name}'s card!`
   const shareDescription = user.bio || `Personal introduction card of ${user.name}`
 
@@ -132,7 +143,7 @@ export default function UserCardPage() {
         </div>
 
         {/* Floating bubbles */}
-        {[...Array(20)].map((_, i) => (
+        {isClient && [...Array(20)].map((_, i) => (
           <div
             key={i}
             className="bubble"
