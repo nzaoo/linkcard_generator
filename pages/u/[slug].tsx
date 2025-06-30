@@ -222,7 +222,7 @@ export default function UserCardPage() {
       </div>
 
       {/* Toast Notifications */}
-      <ToastContainer toasts={toasts} removeToast={removeToast} />
+      <ToastContainer />
     </ErrorBoundary>
   )
 }

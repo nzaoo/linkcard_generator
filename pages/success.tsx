@@ -332,7 +332,7 @@ export default function SuccessPage() {
       </div>
 
       {/* Toast Notifications */}
-      <ToastContainer toasts={toasts} removeToast={removeToast} />
+      <ToastContainer />
     </ErrorBoundary>
   )
 } 

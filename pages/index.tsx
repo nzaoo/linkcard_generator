@@ -451,7 +451,7 @@ export default function Home() {
         <Footer />
 
         {/* Toast Notifications */}
-        <ToastContainer toasts={toasts} removeToast={removeToast} />
+        <ToastContainer />
       </div>
     </ErrorBoundary>
   )
