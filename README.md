@@ -1,10 +1,6 @@
 # LinkCard Generator (NZaoCard)
 
 <p align="center">
-  <img src="public/logo.png" alt="LinkCard Generator Logo" width="180" />
-</p>
-
-<p align="center">
   <i>Create and share beautiful personal link cards easily.</i>
 </p>
 
