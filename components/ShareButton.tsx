@@ -5,13 +5,15 @@ interface ShareButtonProps {
   title?: string;
   description?: string;
   className?: string;
+  platform?: 'facebook' | 'twitter' | 'linkedin' | 'whatsapp' | 'telegram' | 'email' | 'copy';
 }
 
 export default function ShareButton({
   url,
   title = 'Check out my card!',
   description = 'I created this beautiful personal card with NZaoCard',
-  className = ''
+  className = '',
+  platform
 }: ShareButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -21,37 +23,50 @@ export default function ShareButton({
       name: 'Copy Link',
       icon: '🔗',
       action: () => copyToClipboard(url),
-      color: 'bg-blue-500 hover:bg-blue-600'
+      color: 'bg-blue-500 hover:bg-blue-600',
+      platform: 'copy'
     },
     {
       name: 'WhatsApp',
       icon: '💬',
       action: () => shareToWhatsApp(url, title),
-      color: 'bg-green-500 hover:bg-green-600'
+      color: 'bg-green-500 hover:bg-green-600',
+      platform: 'whatsapp'
     },
     {
       name: 'Telegram',
       icon: '📱',
       action: () => shareToTelegram(url, title),
-      color: 'bg-blue-400 hover:bg-blue-500'
+      color: 'bg-blue-400 hover:bg-blue-500',
+      platform: 'telegram'
     },
     {
       name: 'Twitter',
       icon: '🐦',
       action: () => shareToTwitter(url, title),
-      color: 'bg-sky-500 hover:bg-sky-600'
+      color: 'bg-sky-500 hover:bg-sky-600',
+      platform: 'twitter'
     },
     {
       name: 'Facebook',
       icon: '📘',
       action: () => shareToFacebook(url, title),
-      color: 'bg-blue-600 hover:bg-blue-700'
+      color: 'bg-blue-600 hover:bg-blue-700',
+      platform: 'facebook'
+    },
+    {
+      name: 'LinkedIn',
+      icon: '💼',
+      action: () => shareToLinkedIn(url, title),
+      color: 'bg-blue-700 hover:bg-blue-800',
+      platform: 'linkedin'
     },
     {
       name: 'Email',
       icon: '📧',
       action: () => shareToEmail(url, title, description),
-      color: 'bg-gray-500 hover:bg-gray-600'
+      color: 'bg-gray-500 hover:bg-gray-600',
+      platform: 'email'
     }
   ];
 
@@ -84,10 +99,27 @@ export default function ShareButton({
     window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
   };
 
+  const shareToLinkedIn = (url: string, title: string) => {
+    window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`, '_blank');
+  };
+
   const shareToEmail = (url: string, title: string, description: string) => {
     const subject = encodeURIComponent(title);
     const body = encodeURIComponent(`${description}\n\n${url}`);
     window.open(`mailto:?subject=${subject}&body=${body}`, '_blank');
+  };
+
+  // Handle specific platform sharing
+  const handleSpecificPlatform = () => {
+    if (platform) {
+      const option = shareOptions.find(opt => opt.platform === platform);
+      if (option) {
+        option.action();
+        return;
+      }
+    }
+    // If no specific platform or platform not found, use native share
+    shareNative();
   };
 
   // Native Web Share API (if available)
@@ -108,11 +140,27 @@ export default function ShareButton({
     }
   };
 
+  // If specific platform is requested, render single button
+  if (platform) {
+    const option = shareOptions.find(opt => opt.platform === platform);
+    if (option) {
+      return (
+        <button
+          onClick={option.action}
+          className={`${option.color} text-white px-4 py-3 rounded-xl font-semibold transition-all duration-200 transform hover:scale-105 shadow-lg flex items-center space-x-2 ${className}`}
+        >
+          <span className="text-lg">{option.icon}</span>
+          <span>{option.name}</span>
+        </button>
+      );
+    }
+  }
+
   return (
     <div className={`relative ${className}`}>
       {/* Main Share Button */}
       <button
-        onClick={shareNative}
+        onClick={handleSpecificPlatform}
         className="bg-gradient-to-r from-yellow-400 to-orange-500 text-gray-900 px-6 py-3 rounded-full font-semibold hover:from-yellow-500 hover:to-orange-600 transition-all duration-200 transform hover:scale-105 shadow-lg flex items-center space-x-2"
       >
         <span>📤</span>
