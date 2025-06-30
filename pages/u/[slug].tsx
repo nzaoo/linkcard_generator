@@ -10,6 +10,13 @@ import { FullScreenLoading } from '@/components/LoadingSpinner'
 import { useToast, ToastContainer } from '@/components/Toast'
 import Head from 'next/head'
 
+// Type declaration for gtag
+declare global {
+  interface Window {
+    gtag?: (command: string, action: string, params: any) => void
+  }
+}
+
 export default function UserCardPage() {
   const router = useRouter()
   const { slug } = router.query
@@ -153,12 +160,20 @@ export default function UserCardPage() {
 
             {/* Call to Action */}
             <div className="text-center mt-8 animate-fade-in" style={{ animationDelay: '400ms' }}>
-              <button
-                onClick={() => router.push('/')}
-                className="glass-card text-white px-8 py-4 rounded-full font-semibold hover:bg-white/30 transition-all duration-200 border border-white/30 transform hover:scale-105"
-              >
-                ✨ Create Your Own Card
-              </button>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <button
+                  onClick={() => router.push('/')}
+                  className="glass-card text-white px-8 py-4 rounded-full font-semibold hover:bg-white/30 transition-all duration-200 border border-white/30 transform hover:scale-105"
+                >
+                  ✨ Create Your Own Card
+                </button>
+                <button
+                  onClick={() => router.push(`/success?slug=${slug}`)}
+                  className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-8 py-4 rounded-full font-semibold hover:from-blue-600 hover:to-purple-700 transition-all duration-200 transform hover:scale-105"
+                >
+                  🎉 View Success Page
+                </button>
+              </div>
             </div>
 
             {/* Share section */}
