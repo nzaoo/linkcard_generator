@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, ReactNode } from 'react'
+import { createContext, useContext, useState, ReactNode, useEffect } from 'react'
 import { ToastContextType, ToastProps } from '@/types'
 
 const ToastContext = createContext<ToastContextType | undefined>(undefined)

@@ -2,6 +2,7 @@ import '@/styles/globals.css'
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
 import { useEffect, useState } from 'react'
+import { ToastProvider } from '@/components/ui/Toast'
 
 // Type declarations for analytics
 declare global {
@@ -18,12 +19,7 @@ export default function App({ Component, pageProps }: AppProps) {
     setIsClient(true)
   }, [])
 
-  // Prevent hydration mismatch
-  if (!isClient) {
-    return null
-  }
-
-  // Analytics setup
+  // Analytics setup - moved before conditional return
   useEffect(() => {
     if (typeof window !== 'undefined') {
       // Initialize dataLayer
@@ -60,8 +56,13 @@ export default function App({ Component, pageProps }: AppProps) {
     }
   }, [])
 
+  // Prevent hydration mismatch
+  if (!isClient) {
+    return null
+  }
+
   return (
-    <>
+    <ToastProvider>
       <Head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -125,6 +126,6 @@ export default function App({ Component, pageProps }: AppProps) {
       </Head>
 
       <Component {...pageProps} />
-    </>
+    </ToastProvider>
   )
 }
