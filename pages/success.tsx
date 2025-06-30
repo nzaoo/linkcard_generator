@@ -306,6 +306,7 @@ export default function SuccessPage() {
                 <div className="text-center">
                   <div className="text-3xl mb-3">🔗</div>
                   <h4 className="font-semibold text-white mb-2">Update Regularly</h4>
+                  {/* eslint-disable-next-line react/no-unescaped-entities */}
                   <p className="text-white/70 text-sm">
                     Keep your bio and links up to date to stay relevant
                   </p>
