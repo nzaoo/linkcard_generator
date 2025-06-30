@@ -1,5 +1,3 @@
-import type { ToastType } from '@/components/ui/Toast'
-
 // Common interfaces used throughout the application
 
 export interface SocialLink {
@@ -72,7 +70,7 @@ export interface ToastProps {
   onClose: () => void;
   id: string;
   message: string;
-  type: ToastType;
+  type: 'success' | 'error' | 'info' | 'warning';
   duration?: number;
 }
 

@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import { CardPreviewProps, SocialLink } from '@/types'
 import { PLATFORM_ICONS, PLATFORM_COLORS } from '@/constants/platforms'
+import React from 'react'
+import Image from 'next/image'
 
 const getInitials = (fullName: string) => {
   return fullName
@@ -149,10 +151,12 @@ export default function CardPreview({
               ></div>
               <div className="absolute inset-2 rounded-full bg-gray-900 flex items-center justify-center">
                 {avatar ? (
-                  <img
+                  <Image
                     src={avatar}
                     alt={name}
-                    className="w-full h-full rounded-full object-cover"
+                    width={96}
+                    height={96}
+                    className="w-24 h-24 rounded-full object-cover border-4 border-yellow-400 shadow-lg mb-4"
                   />
                 ) : (
                   <span className="text-4xl font-bold gold-gradient-text">{getInitials(name)}</span>

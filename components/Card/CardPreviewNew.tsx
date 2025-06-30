@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import React from 'react'
+import Image from 'next/image'
 
 interface Link {
   platform: string;
@@ -155,10 +157,12 @@ export default function CardPreviewNew({
               <div className="absolute inset-0 rounded-full bg-gradient-to-r from-yellow-400 via-orange-500 to-pink-500 animate-spin" style={{ animationDuration: '3s' }}></div>
               <div className="absolute inset-1 rounded-full bg-gray-900 flex items-center justify-center">
                 {avatar ? (
-                  <img
+                  <Image
                     src={avatar}
                     alt={name}
-                    className="w-full h-full rounded-full object-cover"
+                    width={96}
+                    height={96}
+                    className="w-24 h-24 rounded-full object-cover border-4 border-yellow-400 shadow-lg mb-4"
                   />
                 ) : (
                   <span className="text-4xl font-bold text-white">

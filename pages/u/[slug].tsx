@@ -3,10 +3,10 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { db } from '@/lib/firebase'
 import { collection, query, where, getDocs } from 'firebase/firestore'
-import CardPreview from '@/components/cards/CardPreview'
+import CardPreview from '@/components/Card/CardPreview'
 import ShareButton from '@/components/ui/ShareButton'
-import { ErrorBoundary } from '@/components/ui/ErrorBoundary'
-import { FullScreenLoading } from '@/components/ui/LoadingSpinner'
+import ErrorBoundary from '@/components/ui/ErrorBoundary'
+import FullScreenLoading from '@/components/ui/LoadingSpinner'
 import { useToast, ToastContainer } from '@/components/ui/Toast'
 import Head from 'next/head'
 
@@ -81,7 +81,7 @@ export default function UserCardPage() {
           <div className="text-6xl mb-4">😔</div>
           <h1 className="text-2xl font-bold text-white mb-2">Card Not Found</h1>
           <p className="text-white/80 mb-6">
-            This card doesn't exist or has been removed. Create your own beautiful card!
+            This card doesn&#39;t exist or has been removed. Create your own beautiful card!
           </p>
           <button
             onClick={() => router.push('/')}
