@@ -1,8 +1,5 @@
 import { useState, useEffect } from 'react'
-
-interface StatsProps {
-  className?: string
-}
+import { StatsProps } from '@/types'
 
 export default function Stats({ className = '' }: StatsProps) {
   const [stats, setStats] = useState({

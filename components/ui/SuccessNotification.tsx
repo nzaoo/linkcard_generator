@@ -1,10 +1,5 @@
 import { useState, useEffect } from 'react'
-
-interface SuccessNotificationProps {
-  message: string
-  onClose?: () => void
-  duration?: number
-}
+import { SuccessNotificationProps } from '@/types'
 
 export default function SuccessNotification({ 
   message, 

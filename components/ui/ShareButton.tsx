@@ -1,12 +1,5 @@
 import React, { useState } from 'react';
-
-interface ShareButtonProps {
-  url: string;
-  title?: string;
-  description?: string;
-  className?: string;
-  platform?: 'facebook' | 'twitter' | 'linkedin' | 'whatsapp' | 'telegram' | 'email' | 'copy';
-}
+import { ShareButtonProps } from '@/types'
 
 export default function ShareButton({
   url,

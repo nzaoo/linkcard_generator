@@ -1,29 +1,63 @@
-import React, { useState, useEffect } from 'react'
+import { createContext, useContext, useState, ReactNode } from 'react'
+import { ToastContextType, ToastProps } from '@/types'
+
+const ToastContext = createContext<ToastContextType | undefined>(undefined)
+
+export function ToastProvider({ children }: { children: ReactNode }) {
+  const [toasts, setToasts] = useState<
+    Array<{
+      id: string
+      message: string
+      type: ToastType
+      duration?: number
+    }>
+  >([])
+
+  const addToast = (message: string, type: ToastType = 'info', duration?: number) => {
+    const id = Math.random().toString(36).substr(2, 9)
+    setToasts((prev) => [...prev, { id, message, type, duration }])
+  }
+
+  const removeToast = (id: string) => {
+    setToasts((prev) => prev.filter((toast) => toast.id !== id))
+  }
+
+  const showSuccess = (message: string, duration?: number) => addToast(message, 'success', duration)
+  const showError = (message: string, duration?: number) => addToast(message, 'error', duration)
+  const showWarning = (message: string, duration?: number) => addToast(message, 'warning', duration)
+  const showInfo = (message: string, duration?: number) => addToast(message, 'info', duration)
+
+  return (
+    <ToastContext.Provider value={{ toasts, addToast, removeToast, showSuccess, showError, showWarning, showInfo }}>
+      {children}
+    </ToastContext.Provider>
+  )
+}
 
 export type ToastType = 'success' | 'error' | 'warning' | 'info'
 
-interface ToastProps {
-  message: string
-  type: ToastType
-  duration?: number
-  onClose: () => void
+// Hook for managing toasts
+export function useToast() {
+  const context = useContext(ToastContext)
+  if (context === undefined) {
+    throw new Error('useToast must be used within a ToastProvider')
+  }
+  return context
 }
 
-const toastStyles = {
-  success: 'bg-gradient-to-r from-green-500 to-green-600 border-green-400',
-  error: 'bg-gradient-to-r from-red-500 to-red-600 border-red-400',
-  warning: 'bg-gradient-to-r from-yellow-500 to-orange-500 border-yellow-400',
-  info: 'bg-gradient-to-r from-blue-500 to-blue-600 border-blue-400'
+export function ToastContainer() {
+  const { toasts, removeToast } = useToast()
+
+  return (
+    <div className="fixed top-4 right-4 z-50 space-y-2">
+      {toasts.map((toast) => (
+        <Toast key={toast.id} {...toast} onClose={() => removeToast(toast.id)} />
+      ))}
+    </div>
+  )
 }
 
-const toastIcons = {
-  success: '✅',
-  error: '❌',
-  warning: '⚠️',
-  info: 'ℹ️'
-}
-
-export default function Toast({ message, type, duration = 5000, onClose }: ToastProps) {
+export function Toast({ id, message, type, duration = 5000, onClose }: ToastProps) {
   const [isVisible, setIsVisible] = useState(true)
 
   useEffect(() => {
@@ -73,70 +107,16 @@ export default function Toast({ message, type, duration = 5000, onClose }: Toast
   )
 }
 
-// Toast container to manage multiple toasts
-interface ToastContainerProps {
-  toasts: Array<{
-    id: string
-    message: string
-    type: ToastType
-    duration?: number
-  }>
-  removeToast: (id: string) => void
+const toastStyles = {
+  success: 'bg-gradient-to-r from-green-500 to-green-600 border-green-400',
+  error: 'bg-gradient-to-r from-red-500 to-red-600 border-red-400',
+  warning: 'bg-gradient-to-r from-yellow-500 to-orange-500 border-yellow-400',
+  info: 'bg-gradient-to-r from-blue-500 to-blue-600 border-blue-400'
 }
 
-export function ToastContainer({ toasts, removeToast }: ToastContainerProps) {
-  return (
-    <div className="fixed top-4 right-4 z-50 space-y-2">
-      {toasts.map((toast, index) => (
-        <div
-          key={toast.id}
-          style={{ transform: `translateY(${index * 80}px)` }}
-          className="transition-transform duration-300"
-        >
-          <Toast
-            message={toast.message}
-            type={toast.type}
-            duration={toast.duration}
-            onClose={() => removeToast(toast.id)}
-          />
-        </div>
-      ))}
-    </div>
-  )
-}
-
-// Hook for managing toasts
-export function useToast() {
-  const [toasts, setToasts] = useState<
-    Array<{
-      id: string
-      message: string
-      type: ToastType
-      duration?: number
-    }>
-  >([])
-
-  const addToast = (message: string, type: ToastType = 'info', duration?: number) => {
-    const id = Math.random().toString(36).substr(2, 9)
-    setToasts((prev) => [...prev, { id, message, type, duration }])
-  }
-
-  const removeToast = (id: string) => {
-    setToasts((prev) => prev.filter((toast) => toast.id !== id))
-  }
-
-  const showSuccess = (message: string, duration?: number) => addToast(message, 'success', duration)
-  const showError = (message: string, duration?: number) => addToast(message, 'error', duration)
-  const showWarning = (message: string, duration?: number) => addToast(message, 'warning', duration)
-  const showInfo = (message: string, duration?: number) => addToast(message, 'info', duration)
-
-  return {
-    toasts,
-    addToast,
-    removeToast,
-    showSuccess,
-    showError,
-    showWarning,
-    showInfo
-  }
+const toastIcons = {
+  success: '✅',
+  error: '❌',
+  warning: '⚠️',
+  info: 'ℹ️'
 }
