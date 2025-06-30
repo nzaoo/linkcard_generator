@@ -13,7 +13,7 @@ import Head from 'next/head'
 // Type declaration for gtag
 declare global {
   interface Window {
-    gtag?: (command: string, action: string, params: any) => void
+    gtag?: (...args: any[]) => void
   }
 }
 
