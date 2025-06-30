@@ -53,7 +53,7 @@
 
 ## 🖥️ Demo
 
-- Live: [linkcard-generator.vercel.app](https://linkcard-generator.vercel.app)
+- Live: [linkcard-generator.vercel.app]([https://linkcard-generator.vercel.app](https://linkcard-psi.vercel.app/))
 
 ---
 
