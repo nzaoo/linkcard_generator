@@ -4,14 +4,10 @@ import { useRouter } from 'next/router'
 import { db } from '@/lib/firebase'
 import { addDoc, collection } from 'firebase/firestore'
 import generateSlug from '@/utils/generateSlug'
-import CardPreview from '@/components/cards/CardPreview'
-import FormInput from '@/components/forms/FormInput'
-import SocialLinks from '@/components/forms/SocialLinks'
-import Header from '@/components/layout/Header'
-import Footer from '@/components/layout/Footer'
-import Stats from '@/components/ui/Stats'
+import CardPreview from '@/components/Card/CardPreview'
+import FormInput from '@/components/Form/FormInput'
+import SocialLinks from '@/components/Form/SocialLinks'
 import { useToast, ToastContainer } from '@/components/ui/Toast'
-import { ErrorBoundary } from '@/components/ui/ErrorBoundary'
 import Head from 'next/head'
 
 interface SocialLink {
@@ -103,7 +99,7 @@ export default function Home() {
   }
 
   return (
-    <ErrorBoundary>
+    <>
       <Head>
         <title>NZaoCard - Create Beautiful Personal Introduction Cards</title>
         <meta
@@ -113,8 +109,6 @@ export default function Home() {
       </Head>
 
       <div className="min-h-screen dark-gradient-bg starry-bg shooting-stars text-white font-sans overflow-x-hidden relative">
-        <Header />
-
         {/* Enhanced animated background */}
         <div className="absolute inset-0 -z-10">
           <div className="absolute w-32 h-32 bg-white/5 rounded-full top-[10%] left-[10%] animate-float"></div>
@@ -167,9 +161,6 @@ export default function Home() {
                   ✨ Learn More
                 </button>
               </div>
-              
-              {/* Quick Stats */}
-              <Stats className="mt-12" />
             </div>
           </section>
 
@@ -448,11 +439,9 @@ export default function Home() {
           </section>
         </main>
 
-        <Footer />
-
         {/* Toast Notifications */}
         <ToastContainer />
       </div>
-    </ErrorBoundary>
+    </>
   )
 }
