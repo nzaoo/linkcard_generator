@@ -1,0 +1,73 @@
+// Social media platform configurations
+
+export const SOCIAL_PLATFORMS = {
+  FACEBOOK: 'facebook',
+  TWITTER: 'twitter',
+  LINKEDIN: 'linkedin',
+  INSTAGRAM: 'instagram',
+  YOUTUBE: 'youtube',
+  TIKTOK: 'tiktok',
+  GITHUB: 'github',
+  WEBSITE: 'website',
+  EMAIL: 'email',
+  PHONE: 'phone',
+  WHATSAPP: 'whatsapp',
+  TELEGRAM: 'telegram',
+  DISCORD: 'discord',
+  SPOTIFY: 'spotify',
+  BEHANCE: 'behance',
+  DRIBBBLE: 'dribbble',
+  PINTEREST: 'pinterest',
+  SNAPCHAT: 'snapchat',
+  TWITCH: 'twitch',
+  ZALO: 'zalo',
+  MESSENGER: 'messenger'
+} as const
+
+export const PLATFORM_ICONS: Record<string, string> = {
+  [SOCIAL_PLATFORMS.FACEBOOK]: '📘',
+  [SOCIAL_PLATFORMS.INSTAGRAM]: '📷',
+  [SOCIAL_PLATFORMS.TWITTER]: '🐦',
+  [SOCIAL_PLATFORMS.LINKEDIN]: '💼',
+  [SOCIAL_PLATFORMS.YOUTUBE]: '📺',
+  [SOCIAL_PLATFORMS.TIKTOK]: '🎵',
+  [SOCIAL_PLATFORMS.GITHUB]: '💻',
+  [SOCIAL_PLATFORMS.WEBSITE]: '🌐',
+  [SOCIAL_PLATFORMS.EMAIL]: '📧',
+  [SOCIAL_PLATFORMS.PHONE]: '📞',
+  [SOCIAL_PLATFORMS.WHATSAPP]: '💬',
+  [SOCIAL_PLATFORMS.TELEGRAM]: '📱',
+  [SOCIAL_PLATFORMS.DISCORD]: '🎮',
+  [SOCIAL_PLATFORMS.SPOTIFY]: '🎵',
+  [SOCIAL_PLATFORMS.BEHANCE]: '🎨',
+  [SOCIAL_PLATFORMS.DRIBBBLE]: '🏀',
+  [SOCIAL_PLATFORMS.PINTEREST]: '📌',
+  [SOCIAL_PLATFORMS.SNAPCHAT]: '👻',
+  [SOCIAL_PLATFORMS.TWITCH]: '🎮',
+  [SOCIAL_PLATFORMS.ZALO]: '💙',
+  [SOCIAL_PLATFORMS.MESSENGER]: '💬'
+}
+
+export const PLATFORM_COLORS: Record<string, string> = {
+  [SOCIAL_PLATFORMS.FACEBOOK]: 'from-blue-600 to-blue-700',
+  [SOCIAL_PLATFORMS.INSTAGRAM]: 'from-pink-500 to-purple-600',
+  [SOCIAL_PLATFORMS.TWITTER]: 'from-blue-400 to-blue-500',
+  [SOCIAL_PLATFORMS.LINKEDIN]: 'from-blue-700 to-blue-800',
+  [SOCIAL_PLATFORMS.YOUTUBE]: 'from-red-500 to-red-600',
+  [SOCIAL_PLATFORMS.TIKTOK]: 'from-pink-500 to-purple-500',
+  [SOCIAL_PLATFORMS.GITHUB]: 'from-gray-700 to-gray-800',
+  [SOCIAL_PLATFORMS.WEBSITE]: 'from-indigo-500 to-purple-600',
+  [SOCIAL_PLATFORMS.EMAIL]: 'from-green-500 to-green-600',
+  [SOCIAL_PLATFORMS.PHONE]: 'from-green-600 to-green-700',
+  [SOCIAL_PLATFORMS.WHATSAPP]: 'from-green-500 to-green-600',
+  [SOCIAL_PLATFORMS.TELEGRAM]: 'from-blue-500 to-blue-600',
+  [SOCIAL_PLATFORMS.DISCORD]: 'from-indigo-500 to-purple-600',
+  [SOCIAL_PLATFORMS.SPOTIFY]: 'from-green-500 to-green-600',
+  [SOCIAL_PLATFORMS.BEHANCE]: 'from-blue-600 to-blue-700',
+  [SOCIAL_PLATFORMS.DRIBBBLE]: 'from-pink-500 to-red-500',
+  [SOCIAL_PLATFORMS.PINTEREST]: 'from-red-500 to-red-600',
+  [SOCIAL_PLATFORMS.SNAPCHAT]: 'from-yellow-400 to-yellow-500',
+  [SOCIAL_PLATFORMS.TWITCH]: 'from-purple-500 to-purple-600',
+  [SOCIAL_PLATFORMS.ZALO]: 'from-blue-500 to-blue-600',
+  [SOCIAL_PLATFORMS.MESSENGER]: 'from-blue-500 to-blue-600'
+} 
