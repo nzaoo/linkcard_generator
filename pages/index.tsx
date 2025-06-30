@@ -9,6 +9,7 @@ import FormInput from '@/components/FormInput'
 import SocialLinks from '@/components/SocialLinks'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
+import Stats from '@/components/Stats'
 import { useToast, ToastContainer } from '@/components/Toast'
 import { ErrorBoundary } from '@/components/ErrorBoundary'
 import Head from 'next/head'
@@ -76,9 +77,9 @@ export default function Home() {
 
       showSuccess('Card created successfully! Redirecting...')
 
-      // Redirect to the new card
+      // Redirect to the success page
       setTimeout(() => {
-        router.push(`/u/${cardData.slug}`)
+        router.push(`/success?slug=${cardData.slug}`)
       }, 1500)
     } catch (error) {
       console.error('Error creating card:', error)
@@ -161,6 +162,9 @@ export default function Home() {
                   ✨ Learn More
                 </button>
               </div>
+              
+              {/* Quick Stats */}
+              <Stats className="mt-12" />
             </div>
           </section>
 
@@ -348,6 +352,93 @@ export default function Home() {
                   />
                 </div>
               ))}
+            </div>
+          </section>
+
+          {/* Recent Cards Section */}
+          <section className="container mx-auto px-4 py-20 relative z-10">
+            <div className="text-center mb-16">
+              <h2 className="text-4xl md:text-5xl font-bold gold-gradient-text mb-6">
+                Recently Created Cards
+              </h2>
+              <p className="text-xl opacity-90 max-w-2xl mx-auto">
+                See what others are creating with NZaoCard
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {[
+                {
+                  name: 'Sarah Wilson',
+                  bio: 'UX/UI Designer crafting beautiful digital experiences',
+                  links: [
+                    { platform: 'Dribbble', url: 'https://dribbble.com' },
+                    { platform: 'Instagram', url: 'https://instagram.com' },
+                    { platform: 'Behance', url: 'https://behance.net' }
+                  ]
+                },
+                {
+                  name: 'Alex Chen',
+                  bio: 'Software engineer building the future of technology',
+                  links: [
+                    { platform: 'GitHub', url: 'https://github.com' },
+                    { platform: 'LinkedIn', url: 'https://linkedin.com' },
+                    { platform: 'Twitter', url: 'https://twitter.com' }
+                  ]
+                },
+                {
+                  name: 'Emma Davis',
+                  bio: 'Content creator sharing knowledge and inspiring others',
+                  links: [
+                    { platform: 'YouTube', url: 'https://youtube.com' },
+                    { platform: 'Instagram', url: 'https://instagram.com' },
+                    { platform: 'TikTok', url: 'https://tiktok.com' }
+                  ]
+                }
+              ].map((example, index) => (
+                <div
+                  key={index}
+                  className="animate-slide-in-up"
+                  style={{ animationDelay: `${index * 200}ms` }}
+                >
+                  <CardPreview
+                    name={example.name}
+                    bio={example.bio}
+                    links={example.links}
+                    isPreview={true}
+                    className="hover:transform hover:scale-105 transition-all duration-300"
+                  />
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* CTA Section */}
+          <section className="container mx-auto px-4 py-20 relative z-10">
+            <div className="glass-card rounded-3xl p-12 text-center border border-white/20">
+              <h2 className="text-4xl md:text-5xl font-bold gold-gradient-text mb-6">
+                Ready to Create Your Card?
+              </h2>
+              <p className="text-xl text-white/80 max-w-2xl mx-auto mb-8">
+                Join thousands of people who have already created their beautiful personal cards. 
+                It only takes a few minutes to get started!
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <button
+                  onClick={() =>
+                    document.getElementById('create-form')?.scrollIntoView({ behavior: 'smooth' })
+                  }
+                  className="bg-gradient-to-r from-yellow-400 to-orange-500 text-gray-900 px-8 py-4 rounded-full font-bold text-lg hover:from-yellow-500 hover:to-orange-600 transition-all duration-200 transform hover:scale-105 shadow-xl"
+                >
+                  🚀 Create My Card Now
+                </button>
+                <button
+                  onClick={() => window.open('https://github.com/your-repo', '_blank')}
+                  className="bg-white/20 backdrop-blur-lg text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-white/30 transition-all duration-200 border border-white/30"
+                >
+                  ⭐ Give us a Star
+                </button>
+              </div>
             </div>
           </section>
         </main>
