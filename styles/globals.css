@@ -312,7 +312,7 @@ html {
   animation: bubbleFloat 8s linear infinite;
 }
 
-/* Loading animation */
+/*Loading animation*/
 .loading-dots {
   display: inline-block;
 }
@@ -339,7 +339,7 @@ html {
   }
 }
 
-/* Confetti animation for success page */
+/*Confetti animation for success page*/
 @keyframes confetti {
   0% {
     transform: translateY(-10px) rotate(0deg);
