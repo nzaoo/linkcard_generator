@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 
 interface ShareButtonProps {
   url: string
@@ -24,19 +24,40 @@ const getShareUrl = (platform: string, url: string, title: string, description?:
 }
 
 export default function ShareButton({ url, title, description, platform, className }: ShareButtonProps) {
+  const btnRef = useRef<HTMLButtonElement>(null);
+
   const handleClick = (e: React.MouseEvent) => {
-    e.preventDefault()
-    if (platform) {
-      window.open(getShareUrl(platform, url, title, description), '_blank', 'noopener,noreferrer')
-    } else if (navigator.share) {
-      navigator.share({ title, text: description, url })
-    } else {
-      window.open(url, '_blank', 'noopener,noreferrer')
+    // Hiệu ứng ripple
+    const button = btnRef.current;
+    if (button) {
+      const circle = document.createElement('span');
+      circle.className = 'ripple';
+      const rect = button.getBoundingClientRect();
+      circle.style.left = `${e.clientX - rect.left}px`;
+      circle.style.top = `${e.clientY - rect.top}px`;
+      button.appendChild(circle);
+      setTimeout(() => circle.remove(), 600);
     }
+
+    // Chia sẻ như cũ
+    setTimeout(() => {
+      if (platform) {
+        window.open(getShareUrl(platform, url, title, description), '_blank', 'noopener,noreferrer')
+      } else if (navigator.share) {
+        navigator.share({ title, text: description, url })
+      } else {
+        window.open(url, '_blank', 'noopener,noreferrer')
+      }
+    }, 200); // delay nhỏ để thấy hiệu ứng
   }
 
   return (
-    <button type="button" className={className} onClick={handleClick}>
+    <button
+      ref={btnRef}
+      type="button"
+      className={`relative overflow-hidden ${className || ''}`}
+      onClick={handleClick}
+    >
       {platform ? `Share on ${platform.charAt(0).toUpperCase() + platform.slice(1)}` : 'Share'}
     </button>
   )
