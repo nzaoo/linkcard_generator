@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, useCallback } from 'react'
+import Image from 'next/image'
 
 interface QRCodeGeneratorProps {
   url: string
@@ -31,7 +32,7 @@ export default function QRCodeGenerator({
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
   // Generate QR code using a simple library or API
-  const generateQRCode = async () => {
+  const generateQRCode = useCallback(async () => {
     if (!url) return
 
     setIsGenerating(true)
@@ -50,7 +51,7 @@ export default function QRCodeGenerator({
     } finally {
       setIsGenerating(false)
     }
-  }
+  }, [url, options])
 
   // Simple fallback QR code generation
   const generateSimpleQRCode = () => {
@@ -103,7 +104,7 @@ export default function QRCodeGenerator({
     if (url) {
       generateQRCode()
     }
-  }, [url, options])
+  }, [url, options, generateQRCode])
 
   return (
     <div className={`bg-white rounded-2xl p-6 shadow-xl ${className}`}>
@@ -122,11 +123,15 @@ export default function QRCodeGenerator({
           </div>
         ) : qrCodeDataUrl ? (
           <div className="relative">
-            <img 
-              src={qrCodeDataUrl} 
-              alt="QR Code" 
-              className="w-64 h-64 rounded-lg shadow-lg"
-            />
+            <div className="relative w-64 h-64">
+              <Image 
+                src={qrCodeDataUrl} 
+                alt="QR Code" 
+                fill
+                className="rounded-lg shadow-lg object-contain"
+                sizes="256px"
+              />
+            </div>
             {options.includeLogo && (
               <div className="absolute inset-0 flex items-center justify-center">
                 <div 

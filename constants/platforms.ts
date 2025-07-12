@@ -69,7 +69,8 @@ export const PLATFORM_ICONS: Record<string, string> = {
   [SOCIAL_PLATFORMS.SNAPCHAT]: '👻',
   [SOCIAL_PLATFORMS.TWITCH]: '🎮',
   [SOCIAL_PLATFORMS.ZALO]: '💙',
-  [SOCIAL_PLATFORMS.MESSENGER]: '💬'
+  [SOCIAL_PLATFORMS.MESSENGER]: '💬',
+  default: '🔗'
 }
 
 export const PLATFORM_COLORS: Record<string, string> = {
@@ -93,5 +94,6 @@ export const PLATFORM_COLORS: Record<string, string> = {
   [SOCIAL_PLATFORMS.SNAPCHAT]: 'from-yellow-400 to-yellow-500',
   [SOCIAL_PLATFORMS.TWITCH]: 'from-purple-500 to-purple-600',
   [SOCIAL_PLATFORMS.ZALO]: 'from-blue-500 to-blue-600',
-  [SOCIAL_PLATFORMS.MESSENGER]: 'from-blue-500 to-blue-600'
+  [SOCIAL_PLATFORMS.MESSENGER]: 'from-blue-500 to-blue-600',
+  default: 'from-gray-600 to-gray-700'
 } 
