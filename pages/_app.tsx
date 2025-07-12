@@ -4,22 +4,65 @@ import Head from 'next/head'
 import { useEffect, useState } from 'react'
 import { ToastProvider } from '@/components/ui/Toast'
 
-// Type declarations for analytics
+// Type declarations for analytics and PWA
 declare global {
   interface Window {
     dataLayer?: any[]
     gtag?: (...args: any[]) => void
+    deferredPrompt?: any
   }
 }
 
 export default function App({ Component, pageProps }: AppProps) {
   const [isClient, setIsClient] = useState(false)
+  const [isOnline, setIsOnline] = useState(true)
 
   useEffect(() => {
     setIsClient(true)
   }, [])
 
-  // Analytics setup - moved before conditional return
+  // Service Worker Registration
+  useEffect(() => {
+    if ('serviceWorker' in navigator && typeof window !== 'undefined') {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker
+          .register('/sw.js')
+          .then((registration) => {
+            console.log('SW registered: ', registration)
+          })
+          .catch((registrationError) => {
+            console.log('SW registration failed: ', registrationError)
+          })
+      })
+    }
+  }, [])
+
+  // Online/Offline detection
+  useEffect(() => {
+    const handleOnline = () => setIsOnline(true)
+    const handleOffline = () => setIsOnline(false)
+
+    window.addEventListener('online', handleOnline)
+    window.addEventListener('offline', handleOffline)
+
+    return () => {
+      window.removeEventListener('online', handleOnline)
+      window.removeEventListener('offline', handleOffline)
+    }
+  }, [])
+
+  // PWA Install Prompt
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault()
+        window.deferredPrompt = e
+        console.log('PWA install prompt ready')
+      })
+    }
+  }, [])
+
+  // Analytics setup
   useEffect(() => {
     if (typeof window !== 'undefined') {
       // Initialize dataLayer
@@ -50,7 +93,16 @@ export default function App({ Component, pageProps }: AppProps) {
           'navigation'
         )[0] as PerformanceNavigationTiming
         if (navigation) {
-          console.log('Page load time:', navigation.loadEventEnd - navigation.loadEventStart)
+          const loadTime = navigation.loadEventEnd - navigation.loadEventStart
+          console.log('Page load time:', loadTime)
+          
+          // Track performance metrics
+          if (window.gtag) {
+            window.gtag('event', 'timing_complete', {
+              name: 'load',
+              value: Math.round(loadTime)
+            })
+          }
         }
       })
     }
@@ -65,8 +117,11 @@ export default function App({ Component, pageProps }: AppProps) {
     <ToastProvider>
       <Head>
         <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta name="theme-color" content="#000000" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5" />
+        <meta name="theme-color" content="#fbbf24" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content="NZaoCard" />
         <meta
           name="description"
           content="Create beautiful personal introduction cards with NZaoCard. Share your digital presence with stunning animations and professional design."
@@ -76,6 +131,9 @@ export default function App({ Component, pageProps }: AppProps) {
           content="digital business card, personal card, link in bio, social media links, portfolio, introduction card"
         />
         <meta name="author" content="Nzaoo" />
+
+        {/* PWA Manifest */}
+        <link rel="manifest" href="/manifest.json" />
 
         {/* Open Graph */}
         <meta property="og:type" content="website" />
@@ -124,6 +182,13 @@ export default function App({ Component, pageProps }: AppProps) {
           }}
         />
       </Head>
+
+      {/* Offline indicator */}
+      {!isOnline && (
+        <div className="fixed top-0 left-0 right-0 bg-red-500 text-white text-center py-2 z-50">
+          You are currently offline. Some features may not work.
+        </div>
+      )}
 
       <Component {...pageProps} />
     </ToastProvider>

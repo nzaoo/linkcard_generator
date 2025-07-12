@@ -104,7 +104,65 @@ export default function Home() {
         <title>NZaoCard - Create Beautiful Personal Introduction Cards</title>
         <meta
           name="description"
-          content="Create beautiful personal introduction cards with stunning animations and professional design. Share your digital presence with the world."
+          content="Create beautiful personal introduction cards with stunning animations and professional design. Share your digital presence with the world. Free, fast, and easy to use."
+        />
+        <meta name="keywords" content="digital business card, personal card, introduction card, social media links, portfolio, contact card, digital identity" />
+        <meta name="author" content="NZaoCard" />
+        <meta name="robots" content="index, follow" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+        
+        {/* PWA Manifest */}
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#fbbf24" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content="NZaoCard" />
+        
+        {/* Open Graph */}
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="NZaoCard - Create Beautiful Personal Introduction Cards" />
+        <meta property="og:description" content="Create beautiful personal introduction cards with stunning animations and professional design. Share your digital presence with the world." />
+        <meta property="og:url" content="https://nzaocard.vercel.app" />
+        <meta property="og:site_name" content="NZaoCard" />
+        <meta property="og:image" content="/og-image.png" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:locale" content="en_US" />
+        
+        {/* Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="NZaoCard - Create Beautiful Personal Introduction Cards" />
+        <meta name="twitter:description" content="Create beautiful personal introduction cards with stunning animations and professional design. Share your digital presence with the world." />
+        <meta name="twitter:image" content="/og-image.png" />
+        <meta name="twitter:site" content="@nzaocard" />
+        
+        {/* Favicon */}
+        <link rel="icon" href="/favicon.ico" />
+        <link rel="apple-touch-icon" href="/icon-192x192.png" />
+        
+        {/* Structured Data */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebApplication",
+              "name": "NZaoCard",
+              "description": "Create beautiful personal introduction cards with stunning animations and professional design",
+              "url": "https://nzaocard.vercel.app",
+              "applicationCategory": "ProductivityApplication",
+              "operatingSystem": "Web Browser",
+              "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "USD"
+              },
+              "author": {
+                "@type": "Organization",
+                "name": "NZaoCard"
+              }
+            })
+          }}
         />
       </Head>
 
