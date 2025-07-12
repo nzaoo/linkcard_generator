@@ -172,13 +172,6 @@ export default function App({ Component, pageProps }: AppProps) {
         )}
       </Head>
 
-      {/* Offline indicator */}
-      {!isOnline && (
-        <div className="fixed top-0 left-0 right-0 bg-red-500 text-white text-center py-2 z-50">
-          You are currently offline. Some features may not work.
-        </div>
-      )}
-
       <Component {...pageProps} />
     </ToastProvider>
   )
