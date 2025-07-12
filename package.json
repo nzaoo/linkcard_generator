@@ -1,9 +1,9 @@
 {
   "name": "nzaocard",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Personal introduction card generator",
   "private": true,
-  "buildTimestamp": "2024-12-19T12:30:00Z",
+  "buildTimestamp": "2024-12-19T13:00:00Z",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

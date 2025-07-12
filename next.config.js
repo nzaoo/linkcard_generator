@@ -2,25 +2,27 @@
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
-  images: {
-    domains: ['localhost', 'vercel.app', 'your-domain.com'],
+  experimental: {
+    appDir: false,
   },
+  // Force fresh build
+  generateBuildId: async () => {
+    return `build-${Date.now()}`
+  },
+  // Optimize images
+  images: {
+    domains: ['localhost'],
+    formats: ['image/webp', 'image/avif'],
+  },
+  // PWA configuration
   async headers() {
     return [
       {
-        source: '/(.*)',
+        source: '/manifest.json',
         headers: [
           {
-            key: 'X-Frame-Options',
-            value: 'DENY',
-          },
-          {
-            key: 'X-Content-Type-Options',
-            value: 'nosniff',
-          },
-          {
-            key: 'Referrer-Policy',
-            value: 'origin-when-cross-origin',
+            key: 'Content-Type',
+            value: 'application/manifest+json',
           },
         ],
       },
