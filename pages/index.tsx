@@ -272,6 +272,19 @@ export default function Home() {
           />
         ))}
 
+        {/* Navigation */}
+        <nav className="absolute top-6 right-6 z-20">
+          <div className="flex items-center space-x-4">
+            <button
+              onClick={() => router.push('/dashboard')}
+              className="bg-white/20 backdrop-blur-lg text-white px-4 py-2 rounded-xl font-semibold hover:bg-white/30 transition-all duration-200 border border-white/30"
+            >
+              📊 Dashboard
+            </button>
+            <ThemeCustomizer />
+          </div>
+        </nav>
+
         <main className="pt-16">
           {/* Hero Section with typing effect */}
           <section ref={heroRef} className="container mx-auto px-4 py-20 relative z-10">

@@ -9,6 +9,7 @@ import FullScreenLoading from '@/components/ui/LoadingSpinner'
 import { useToast, ToastContainer } from '@/components/ui/Toast'
 import QRCodeGenerator from '@/components/ui/QRCodeGenerator'
 import AdvancedSharing from '@/components/ui/AdvancedSharing'
+import ExportOptions from '@/components/ui/ExportOptions'
 import { trackCardView, getAnalytics, AnalyticsData } from '@/lib/analytics'
 import Head from 'next/head'
 
@@ -31,6 +32,8 @@ export default function SuccessPage() {
   const [cardUrl, setCardUrl] = useState('')
   const [analytics, setAnalytics] = useState<AnalyticsData | null>(null)
   const [showAdvancedSharing, setShowAdvancedSharing] = useState(false)
+  const [showExportOptions, setShowExportOptions] = useState(false)
+  const [cardElement, setCardElement] = useState<HTMLElement | null>(null)
 
   useEffect(() => {
     setIsClient(true)
@@ -190,14 +193,16 @@ export default function SuccessPage() {
               <h3 className="text-2xl font-bold text-center mb-6 text-gray-100">
                 Your Card Preview
               </h3>
-              <CardPreview
-                name={user.name}
-                bio={user.bio}
-                links={user.links || []}
-                avatar={user.avatar}
-                isPreview={false}
-                className="animate-scale-in"
-              />
+              <div ref={(el) => setCardElement(el)}>
+                <CardPreview
+                  name={user.name}
+                  bio={user.bio}
+                  links={user.links || []}
+                  avatar={user.avatar}
+                  isPreview={false}
+                  className="animate-scale-in"
+                />
+              </div>
             </div>
 
             {/* Share Options */}
@@ -289,13 +294,20 @@ export default function SuccessPage() {
                   </div>
                 </div>
 
-                {/* Advanced Sharing Toggle */}
-                <div className="mb-8">
+                {/* Advanced Options Toggle */}
+                <div className="mb-8 space-y-3">
                   <button
                     onClick={() => setShowAdvancedSharing(!showAdvancedSharing)}
                     className="w-full bg-white/20 backdrop-blur-lg text-white px-6 py-3 rounded-xl font-semibold hover:bg-white/30 transition-all duration-200 border border-white/30"
                   >
                     {showAdvancedSharing ? 'Hide' : 'Show'} Advanced Sharing Options
+                  </button>
+                  
+                  <button
+                    onClick={() => setShowExportOptions(!showExportOptions)}
+                    className="w-full bg-white/20 backdrop-blur-lg text-white px-6 py-3 rounded-xl font-semibold hover:bg-white/30 transition-all duration-200 border border-white/30"
+                  >
+                    {showExportOptions ? 'Hide' : 'Show'} Export Options
                   </button>
                 </div>
 
@@ -345,6 +357,18 @@ export default function SuccessPage() {
                 <QRCodeGenerator
                   url={cardUrl}
                   title="Scan to view card"
+                />
+              </div>
+            </div>
+          )}
+
+          {/* Export Options Section */}
+          {showExportOptions && (
+            <div className="mt-12 animate-fade-in">
+              <div className="max-w-2xl mx-auto">
+                <ExportOptions
+                  cardElement={cardElement}
+                  cardName={user.name}
                 />
               </div>
             </div>
