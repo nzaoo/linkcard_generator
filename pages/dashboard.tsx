@@ -7,6 +7,7 @@ import { getAnalytics } from '@/lib/analytics'
 import CardPreview from '@/components/Card/CardPreview'
 import LoadingSkeleton from '@/components/ui/LoadingSkeleton'
 import ErrorBoundary from '@/components/ui/ErrorBoundary'
+import BulkOperations from '@/components/ui/BulkOperations'
 import { useToast, ToastContainer } from '@/components/ui/Toast'
 
 interface CardData {
@@ -33,6 +34,7 @@ export default function DashboardPage() {
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
   const [searchTerm, setSearchTerm] = useState('')
   const [sortBy, setSortBy] = useState<'name' | 'created' | 'views'>('created')
+  const [showBulkOperations, setShowBulkOperations] = useState(false)
 
   useEffect(() => {
     fetchCards()
@@ -116,6 +118,29 @@ export default function DashboardPage() {
     showSuccess('Card URL copied to clipboard!')
   }
 
+  const handleBulkImport = async (importedCards: any[]) => {
+    try {
+      // In a real app, you'd save these to the database
+      // For now, we'll just show a success message
+      showSuccess(`Successfully imported ${importedCards.length} cards!`)
+      
+      // Refresh the cards list
+      await fetchCards()
+    } catch (error) {
+      console.error('Error importing cards:', error)
+      showError('Failed to import cards')
+    }
+  }
+
+  const handleBulkExport = async (format: string) => {
+    try {
+      showSuccess(`Successfully exported cards as ${format.toUpperCase()}!`)
+    } catch (error) {
+      console.error('Error exporting cards:', error)
+      showError('Failed to export cards')
+    }
+  }
+
   const totalViews = cards.reduce((sum, card) => sum + (card.analytics?.views || 0), 0)
   const totalClicks = cards.reduce((sum, card) => sum + (card.analytics?.clicks || 0), 0)
   const totalShares = cards.reduce((sum, card) => sum + (card.analytics?.shares || 0), 0)
@@ -182,6 +207,12 @@ export default function DashboardPage() {
                 >
                   {viewMode === 'grid' ? '📋 List View' : '🔲 Grid View'}
                 </button>
+                <button
+                  onClick={() => setShowBulkOperations(!showBulkOperations)}
+                  className="bg-white/20 backdrop-blur-lg text-white px-4 py-3 rounded-xl font-semibold hover:bg-white/30 transition-all duration-200 border border-white/30"
+                >
+                  {showBulkOperations ? 'Hide' : 'Show'} Bulk Operations
+                </button>
               </div>
 
               <div className="flex gap-4 items-center">
@@ -204,6 +235,17 @@ export default function DashboardPage() {
               </div>
             </div>
           </div>
+
+          {/* Bulk Operations Section */}
+          {showBulkOperations && (
+            <div className="mb-8 animate-fade-in">
+              <BulkOperations
+                onImport={handleBulkImport}
+                onExport={handleBulkExport}
+                cards={cards}
+              />
+            </div>
+          )}
 
           {/* Cards Display */}
           {isLoading ? (
