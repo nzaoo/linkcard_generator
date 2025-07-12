@@ -68,8 +68,8 @@ export default function CardPreviewNew({
           <div className="space-y-3">
             {links.map((link: SocialLink, index: number) => {
               const platform = link.platform.toLowerCase()
-              const Icon = PLATFORM_ICONS[platform] || PLATFORM_ICONS.default
-              const color = PLATFORM_COLORS[platform] || PLATFORM_COLORS.default
+              const icon = PLATFORM_ICONS[platform] || PLATFORM_ICONS.default || '🔗'
+              const color = PLATFORM_COLORS[platform] || PLATFORM_COLORS.default || 'from-gray-600 to-gray-700'
               
               return (
                 <a
@@ -77,10 +77,10 @@ export default function CardPreviewNew({
                   href={link.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`flex items-center justify-center p-3 rounded-xl text-white font-medium transition-all duration-200 transform hover:scale-105 hover:shadow-lg ${color}`}
+                  className={`flex items-center justify-center p-3 rounded-xl text-white font-medium transition-all duration-200 transform hover:scale-105 hover:shadow-lg bg-gradient-to-r ${color}`}
                   aria-label={`Visit ${name}'s ${platform} profile`}
                 >
-                  <Icon className="w-5 h-5 mr-3" />
+                  <span className="text-xl mr-3">{icon}</span>
                   <span className="capitalize">{platform}</span>
                 </a>
               )

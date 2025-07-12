@@ -47,45 +47,40 @@ export default function QRCodeGenerator({
     } catch (error) {
       console.error('Error generating QR code:', error)
       // Fallback to a simple text-based QR code
-      generateSimpleQRCode()
+      if (canvasRef.current) {
+        const canvas = canvasRef.current
+        const ctx = canvas.getContext('2d')
+        if (ctx) {
+          canvas.width = options.size
+          canvas.height = options.size
+
+          // Fill background
+          ctx.fillStyle = options.backgroundColor
+          ctx.fillRect(0, 0, options.size, options.size)
+
+          // Draw simple QR-like pattern (this is just a placeholder)
+          ctx.fillStyle = options.foregroundColor
+          const cellSize = options.size / 25
+
+          // Draw corner squares
+          ctx.fillRect(0, 0, cellSize * 7, cellSize * 7)
+          ctx.fillRect(options.size - cellSize * 7, 0, cellSize * 7, cellSize * 7)
+          ctx.fillRect(0, options.size - cellSize * 7, cellSize * 7, cellSize * 7)
+
+          // Draw some random pattern
+          for (let i = 0; i < 100; i++) {
+            const x = Math.floor(Math.random() * 25) * cellSize
+            const y = Math.floor(Math.random() * 25) * cellSize
+            ctx.fillRect(x, y, cellSize, cellSize)
+          }
+
+          setQrCodeDataUrl(canvas.toDataURL())
+        }
+      }
     } finally {
       setIsGenerating(false)
     }
   }, [url, options])
-
-  // Simple fallback QR code generation
-  const generateSimpleQRCode = () => {
-    if (!canvasRef.current) return
-
-    const canvas = canvasRef.current
-    const ctx = canvas.getContext('2d')
-    if (!ctx) return
-
-    canvas.width = options.size
-    canvas.height = options.size
-
-    // Fill background
-    ctx.fillStyle = options.backgroundColor
-    ctx.fillRect(0, 0, options.size, options.size)
-
-    // Draw simple QR-like pattern (this is just a placeholder)
-    ctx.fillStyle = options.foregroundColor
-    const cellSize = options.size / 25
-
-    // Draw corner squares
-    ctx.fillRect(0, 0, cellSize * 7, cellSize * 7)
-    ctx.fillRect(options.size - cellSize * 7, 0, cellSize * 7, cellSize * 7)
-    ctx.fillRect(0, options.size - cellSize * 7, cellSize * 7, cellSize * 7)
-
-    // Draw some random pattern
-    for (let i = 0; i < 100; i++) {
-      const x = Math.floor(Math.random() * 25) * cellSize
-      const y = Math.floor(Math.random() * 25) * cellSize
-      ctx.fillRect(x, y, cellSize, cellSize)
-    }
-
-    setQrCodeDataUrl(canvas.toDataURL())
-  }
 
   // Download QR code
   const downloadQRCode = () => {
