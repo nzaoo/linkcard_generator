@@ -8,6 +8,9 @@ import CardPreview from '@/components/Card/CardPreview'
 import FormInput from '@/components/Form/FormInput'
 import SocialLinks from '@/components/Form/SocialLinks'
 import { useToast, ToastContainer } from '@/components/ui/Toast'
+import LoadingSkeleton from '@/components/ui/LoadingSkeleton'
+import ThemeCustomizer from '@/components/ui/ThemeCustomizer'
+import { useAnimations } from '@/hooks/useAnimations'
 import Head from 'next/head'
 
 interface SocialLink {
@@ -15,9 +18,32 @@ interface SocialLink {
   url: string
 }
 
+interface Theme {
+  id: string
+  name: string
+  primaryColor: string
+  secondaryColor: string
+  backgroundColor: string
+  textColor: string
+  gradient: string
+  preview: string
+}
+
+const defaultTheme: Theme = {
+  id: 'sunset',
+  name: 'Sunset',
+  primaryColor: '#fbbf24',
+  secondaryColor: '#f59e0b',
+  backgroundColor: '#1f2937',
+  textColor: '#ffffff',
+  gradient: 'from-yellow-400 to-orange-500',
+  preview: '🌅'
+}
+
 export default function Home() {
   const router = useRouter()
   const { toasts, removeToast, showSuccess, showError } = useToast()
+  const { useTypingEffect, useIntersectionObserver, scrollToElement } = useAnimations()
 
   const [name, setName] = useState('')
   const [bio, setBio] = useState('')
@@ -25,9 +51,57 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false)
   const [errors, setErrors] = useState<{ [key: string]: string }>({})
   const [isClient, setIsClient] = useState(false)
+  const [currentTheme, setCurrentTheme] = useState<Theme>(defaultTheme)
+  const [autoSaveStatus, setAutoSaveStatus] = useState<'saved' | 'saving' | 'error'>('saved')
+
+  // Animation hooks
+  const { ref: heroRef, isIntersecting: isHeroVisible } = useIntersectionObserver(0.3)
+  const { displayText: heroText, isTyping } = useTypingEffect(
+    'Create Your Digital Identity',
+    80
+  )
 
   useEffect(() => {
     setIsClient(true)
+  }, [])
+
+  // Auto-save functionality
+  useEffect(() => {
+    if (!name && !bio && socialLinks.length === 0) return
+
+    const autoSaveTimer = setTimeout(() => {
+      setAutoSaveStatus('saving')
+      
+      // Simulate auto-save
+      setTimeout(() => {
+        setAutoSaveStatus('saved')
+        // Here you could save to localStorage or send to backend
+        localStorage.setItem('nzaocard-draft', JSON.stringify({
+          name,
+          bio,
+          socialLinks,
+          theme: currentTheme
+        }))
+      }, 1000)
+    }, 2000)
+
+    return () => clearTimeout(autoSaveTimer)
+  }, [name, bio, socialLinks, currentTheme])
+
+  // Load draft on mount
+  useEffect(() => {
+    const savedDraft = localStorage.getItem('nzaocard-draft')
+    if (savedDraft) {
+      try {
+        const draft = JSON.parse(savedDraft)
+        setName(draft.name || '')
+        setBio(draft.bio || '')
+        setSocialLinks(draft.socialLinks || [])
+        setCurrentTheme(draft.theme || defaultTheme)
+      } catch (error) {
+        console.error('Error loading draft:', error)
+      }
+    }
   }, [])
 
   const getInitials = (fullName: string) => {
@@ -71,12 +145,16 @@ export default function Home() {
         bio: bio.trim(),
         links: socialLinks,
         slug: generateSlug(name),
+        theme: currentTheme,
         createdAt: new Date()
       }
 
       const docRef = await addDoc(collection(db, 'cards'), cardData)
 
       showSuccess('Card created successfully! Redirecting...')
+
+      // Clear draft after successful creation
+      localStorage.removeItem('nzaocard-draft')
 
       // Redirect to the success page
       setTimeout(() => {
@@ -96,6 +174,10 @@ export default function Home() {
       delete newErrors[field]
       return newErrors
     })
+  }
+
+  const handleThemeChange = (theme: Theme) => {
+    setCurrentTheme(theme)
   }
 
   return (
@@ -167,19 +249,19 @@ export default function Home() {
       </Head>
 
       <div className="min-h-screen dark-gradient-bg starry-bg shooting-stars text-white font-sans overflow-x-hidden relative">
-        {/* Enhanced animated background */}
+        {/* Enhanced animated background with parallax */}
         <div className="absolute inset-0 -z-10">
-          <div className="absolute w-32 h-32 bg-white/5 rounded-full top-[10%] left-[10%] animate-float"></div>
-          <div className="absolute w-24 h-24 bg-white/5 rounded-full top-[60%] right-[20%] animate-float delay-300"></div>
-          <div className="absolute w-16 h-16 bg-white/5 rounded-full bottom-[20%] left-[30%] animate-float delay-600"></div>
-          <div className="absolute w-20 h-20 bg-white/5 rounded-full top-[30%] right-[60%] animate-float delay-900"></div>
+          <div className="absolute w-32 h-32 bg-white/5 rounded-full top-[10%] left-[10%] animate-float parallax"></div>
+          <div className="absolute w-24 h-24 bg-white/5 rounded-full top-[60%] right-[20%] animate-float delay-300 parallax"></div>
+          <div className="absolute w-16 h-16 bg-white/5 rounded-full bottom-[20%] left-[30%] animate-float delay-600 parallax"></div>
+          <div className="absolute w-20 h-20 bg-white/5 rounded-full top-[30%] right-[60%] animate-float delay-900 parallax"></div>
         </div>
 
         {/* Floating bubbles */}
         {isClient && [...Array(15)].map((_, i) => (
           <div
             key={i}
-            className="bubble"
+            className="bubble particle"
             style={{
               left: `${Math.random() * 100}%`,
               width: `${Math.random() * 20 + 10}px`,
@@ -191,11 +273,14 @@ export default function Home() {
         ))}
 
         <main className="pt-16">
-          {/* Hero Section */}
-          <section className="container mx-auto px-4 py-20 relative z-10">
-            <div className="text-center mb-16 animate-fade-in">
+          {/* Hero Section with typing effect */}
+          <section ref={heroRef} className="container mx-auto px-4 py-20 relative z-10">
+            <div className={`text-center mb-16 transition-all duration-1000 ${
+              isHeroVisible ? 'animate-fade-in opacity-100' : 'opacity-0'
+            }`}>
               <h1 className="text-6xl md:text-7xl font-bold gold-gradient-text drop-shadow-lg mb-6">
-                Create Your Digital Identity
+                {heroText}
+                {isTyping && <span className="typing-cursor">|</span>}
               </h1>
               <p className="text-xl md:text-2xl opacity-90 max-w-3xl mx-auto leading-relaxed mb-8">
                 Transform your digital presence with stunning personal introduction cards. Beautiful
@@ -203,18 +288,14 @@ export default function Home() {
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <button
-                  onClick={() =>
-                    document.getElementById('create-form')?.scrollIntoView({ behavior: 'smooth' })
-                  }
-                  className="bg-gradient-to-r from-yellow-400 to-orange-500 text-gray-900 px-8 py-4 rounded-full font-bold text-lg hover:from-yellow-500 hover:to-orange-600 transition-all duration-200 transform hover:scale-105 shadow-xl"
+                  onClick={() => scrollToElement('create-form', 80)}
+                  className="bg-gradient-to-r from-yellow-400 to-orange-500 text-gray-900 px-8 py-4 rounded-full font-bold text-lg hover:from-yellow-500 hover:to-orange-600 transition-all duration-200 transform hover:scale-105 shadow-xl hover-lift"
                 >
                   🚀 Start Creating
                 </button>
                 <button
-                  onClick={() =>
-                    document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })
-                  }
-                  className="bg-white/20 backdrop-blur-lg text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-white/30 transition-all duration-200 border border-white/30"
+                  onClick={() => scrollToElement('features', 80)}
+                  className="bg-white/20 backdrop-blur-lg text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-white/30 transition-all duration-200 border border-white/30 hover-lift"
                 >
                   ✨ Learn More
                 </button>
@@ -228,9 +309,29 @@ export default function Home() {
               {/* Form Section */}
               <div className="animate-slide-in-up">
                 <div className="glass-card rounded-3xl p-8 shadow-2xl">
-                  <h2 className="text-gray-100 text-3xl font-bold mb-8 text-center">
-                    Create Your Card
-                  </h2>
+                  <div className="flex items-center justify-between mb-8">
+                    <h2 className="text-gray-100 text-3xl font-bold">
+                      Create Your Card
+                    </h2>
+                    <ThemeCustomizer 
+                      onThemeChange={handleThemeChange}
+                      currentTheme={currentTheme}
+                    />
+                  </div>
+
+                  {/* Auto-save indicator */}
+                  <div className="mb-4 flex items-center space-x-2">
+                    <div className={`w-2 h-2 rounded-full ${
+                      autoSaveStatus === 'saved' ? 'bg-green-400' :
+                      autoSaveStatus === 'saving' ? 'bg-yellow-400 animate-pulse' :
+                      'bg-red-400'
+                    }`} />
+                    <span className="text-sm text-gray-400">
+                      {autoSaveStatus === 'saved' ? 'All changes saved' :
+                       autoSaveStatus === 'saving' ? 'Saving...' :
+                       'Save failed'}
+                    </span>
+                  </div>
 
                   <form onSubmit={handleSubmit} className="space-y-6">
                     <FormInput
@@ -259,16 +360,12 @@ export default function Home() {
                     <button
                       type="submit"
                       disabled={isLoading}
-                      className={`w-full py-4 text-lg font-bold rounded-xl transition-all duration-300 transform hover:scale-105 focus-ring ${
-                        isLoading
-                          ? 'bg-gray-600 cursor-not-allowed'
-                          : 'bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 hover:shadow-xl text-gray-900'
-                      }`}
+                      className="w-full bg-gradient-to-r from-yellow-400 to-orange-500 text-gray-900 py-4 rounded-xl font-bold text-lg hover:from-yellow-500 hover:to-orange-600 transition-all duration-200 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed hover-lift"
                     >
                       {isLoading ? (
-                        <div className="flex items-center justify-center">
-                          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-gray-900 mr-3"></div>
-                          Creating your card<span className="loading-dots"></span>
+                        <div className="flex items-center justify-center space-x-2">
+                          <div className="w-5 h-5 border-2 border-gray-900 border-t-transparent rounded-full animate-spin" />
+                          <span>Creating...</span>
                         </div>
                       ) : (
                         '✨ Create My Card'
@@ -278,20 +375,22 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Preview Section */}
+              {/* Card Preview Section */}
               <div className="animate-slide-in-up" style={{ animationDelay: '200ms' }}>
-                <div className="sticky top-24">
-                  <h3 className="text-2xl font-bold text-center mb-6 text-gray-100">
-                    Live Preview
-                  </h3>
+                <h3 className="text-2xl font-bold text-center mb-6 text-gray-100">
+                  Live Preview
+                </h3>
+                {name || bio || socialLinks.length > 0 ? (
                   <CardPreview
-                    name={name}
-                    bio={bio}
+                    name={name || 'Your Name'}
+                    bio={bio || 'Your bio will appear here...'}
                     links={socialLinks}
                     isPreview={true}
                     className="animate-scale-in"
                   />
-                </div>
+                ) : (
+                  <LoadingSkeleton type="card" className="animate-pulse" />
+                )}
               </div>
             </div>
           </section>
@@ -302,48 +401,47 @@ export default function Home() {
               <h2 className="text-4xl md:text-5xl font-bold gold-gradient-text mb-6">
                 Why Choose NZaoCard?
               </h2>
-              <p className="text-xl opacity-90 max-w-2xl mx-auto">
-                Professional features designed to make your digital presence stand out
+              <p className="text-xl text-white/80 max-w-3xl mx-auto">
+                Experience the perfect blend of beauty, functionality, and performance
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid md:grid-cols-3 gap-8">
               {[
                 {
                   icon: '🎨',
-                  title: 'Beautiful Design',
-                  description:
-                    'Stunning animations and glassmorphism effects that captivate your audience'
-                },
-                {
-                  icon: '📱',
-                  title: 'Mobile Responsive',
-                  description: 'Perfect display on all devices - desktop, tablet, and mobile'
-                },
-                {
-                  icon: '🔗',
-                  title: 'Rich Social Links',
-                  description: 'Support for 20+ social media platforms with custom icons and colors'
+                  title: 'Beautiful Themes',
+                  description: 'Choose from multiple stunning themes or create your own custom design'
                 },
                 {
                   icon: '⚡',
                   title: 'Lightning Fast',
-                  description: 'Optimized performance for instant loading and smooth interactions'
+                  description: 'Optimized for speed with lazy loading and performance enhancements'
+                },
+                {
+                  icon: '📱',
+                  title: 'Mobile First',
+                  description: 'Perfect experience on all devices with PWA support'
                 },
                 {
                   icon: '🔒',
                   title: 'Secure & Private',
-                  description: "Your data is safe with Firebase's enterprise-grade security"
+                  description: 'Your data is safe with our secure infrastructure'
                 },
                 {
-                  icon: '🎯',
-                  title: 'SEO Optimized',
-                  description: 'Built for search engines to help you get discovered online'
+                  icon: '🚀',
+                  title: 'Easy Sharing',
+                  description: 'Share your card instantly across all social platforms'
+                },
+                {
+                  icon: '📊',
+                  title: 'Analytics',
+                  description: 'Track views and engagement with built-in analytics'
                 }
               ].map((feature, index) => (
                 <div
                   key={index}
-                  className="glass-card rounded-2xl p-6 text-center hover:transform hover:scale-105 transition-all duration-300"
+                  className="glass-card rounded-2xl p-6 text-center hover-lift transition-all duration-300"
                   style={{ animationDelay: `${index * 100}ms` }}
                 >
                   <div className="text-4xl mb-4">{feature.icon}</div>
@@ -479,10 +577,8 @@ export default function Home() {
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <button
-                  onClick={() =>
-                    document.getElementById('create-form')?.scrollIntoView({ behavior: 'smooth' })
-                  }
-                  className="bg-gradient-to-r from-yellow-400 to-orange-500 text-gray-900 px-8 py-4 rounded-full font-bold text-lg hover:from-yellow-500 hover:to-orange-600 transition-all duration-200 transform hover:scale-105 shadow-xl"
+                  onClick={() => scrollToElement('create-form', 80)}
+                  className="bg-gradient-to-r from-yellow-400 to-orange-500 text-gray-900 px-8 py-4 rounded-full font-bold text-lg hover:from-yellow-500 hover:to-orange-600 transition-all duration-200 transform hover:scale-105 shadow-xl hover-lift"
                 >
                   🚀 Create My Card Now
                 </button>
@@ -490,7 +586,7 @@ export default function Home() {
                   href="https://github.com/nzaoo/linkcard_generator"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="bg-white/20 backdrop-blur-lg text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-white/30 transition-all duration-200 border border-white/30"
+                  className="bg-white/20 backdrop-blur-lg text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-white/30 transition-all duration-200 border border-white/30 hover-lift"
                 >
                   ⭐ Give me a Star
                 </a>
