@@ -1,14 +1,15 @@
 {
   "name": "nzaocard",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Personal introduction card generator",
   "private": true,
-  "buildTimestamp": "2024-12-19T13:00:00Z",
+  "buildTimestamp": "2024-12-19T13:15:00Z",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "clean": "rm -rf .next && rm -rf node_modules/.cache",
     "type-check": "tsc --noEmit",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
