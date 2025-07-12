@@ -8,6 +8,7 @@ import ShareButton from '@/components/ui/ShareButton'
 import ErrorBoundary from '@/components/ui/ErrorBoundary'
 import FullScreenLoading from '@/components/ui/LoadingSpinner'
 import { useToast, ToastContainer } from '@/components/ui/Toast'
+import { trackCardView, trackLinkClick } from '@/lib/analytics'
 import Head from 'next/head'
 
 // Type declaration for gtag
@@ -42,12 +43,21 @@ export default function UserCardPage() {
         if (!querySnapshot.empty) {
           const userData = querySnapshot.docs[0].data()
           setUser(userData)
-
-          // Track page view for analytics - only on client-side
-          if (isClient && typeof window !== 'undefined' && window.gtag) {
+          
+          // Track card view with referrer information
+          const referrer = document.referrer || 'direct'
+          await trackCardView(slug as string, referrer)
+          
+          // Track page view in analytics
+          if (typeof window !== 'undefined' && window.gtag) {
             window.gtag('event', 'page_view', {
-              page_title: `${userData.name} - NZaoCard`,
-              page_location: window.location.href
+              page_title: `${userData.name}'s Card`,
+              page_location: window.location.href,
+              custom_parameter: {
+                card_slug: slug,
+                card_name: userData.name,
+                referrer: referrer
+              }
             })
           }
         } else {
@@ -62,13 +72,43 @@ export default function UserCardPage() {
     }
 
     fetchUser()
-  }, [slug, isClient])
+  }, [slug])
 
   useEffect(() => {
     if (isClient && typeof window !== 'undefined') {
       setCardUrl(window.location.href)
     }
   }, [isClient])
+
+  // Track link clicks
+  const handleLinkClick = async (link: any) => {
+    try {
+      await trackLinkClick({
+        slug: slug as string,
+        linkType: 'social',
+        platform: link.platform,
+        url: link.url,
+        timestamp: new Date(),
+        userAgent: navigator.userAgent,
+        referrer: document.referrer || 'direct'
+      })
+
+      // Track in Google Analytics
+      if (typeof window !== 'undefined' && window.gtag) {
+        window.gtag('event', 'click', {
+          event_category: 'card_link',
+          event_label: link.platform,
+          custom_parameter: {
+            card_slug: slug,
+            platform: link.platform,
+            link_url: link.url
+          }
+        })
+      }
+    } catch (error) {
+      console.error('Error tracking link click:', error)
+    }
+  }
 
   if (isLoading) {
     return <FullScreenLoading text="Loading your card..." />
@@ -100,37 +140,23 @@ export default function UserCardPage() {
   return (
     <ErrorBoundary>
       <Head>
-        <title>{user.name} - NZaoCard</title>
-        <meta name="description" content={user.bio || `Personal introduction card of ${user.name}`} />
-        <meta name="keywords" content={`${user.name}, personal card, digital business card, introduction`} />
-
-        {/* Open Graph */}
-        <meta property="og:type" content="profile" />
-        <meta property="og:title" content={`${user.name} - NZaoCard`} />
-        <meta property="og:description" content={user.bio || `Personal introduction card of ${user.name}`} />
-        <meta property="og:image" content={user.avatar || '/default-avatar.png'} />
-        <meta property="og:url" content={cardUrl} />
-
-        {/* Twitter Card */}
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={`${user.name} - NZaoCard`} />
-        <meta name="twitter:description" content={user.bio || `Personal introduction card of ${user.name}`} />
-        <meta name="twitter:image" content={user.avatar || '/default-avatar.png'} />
-
-        {/* Structured Data */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "Person",
-              "name": user.name,
-              "description": user.bio,
-              "url": cardUrl,
-              "sameAs": user.links?.map((link: any) => link.url) || []
-            })
-          }}
+        <title>{user ? `${user.name}'s Card` : 'Card Not Found'} - NZaoCard</title>
+        <meta
+          name="description"
+          content={user ? `${user.name}'s personal introduction card. Connect with ${user.name} through their social links and contact information.` : 'Card not found'}
         />
+        {user && (
+          <>
+            <meta property="og:title" content={`${user.name}'s Card`} />
+            <meta property="og:description" content={user.bio || `${user.name}'s personal introduction card`} />
+            <meta property="og:image" content={user.avatar || '/default-avatar.png'} />
+            <meta property="og:url" content={typeof window !== 'undefined' ? window.location.href : ''} />
+            <meta name="twitter:card" content="summary_large_image" />
+            <meta name="twitter:title" content={`${user.name}'s Card`} />
+            <meta name="twitter:description" content={user.bio || `${user.name}'s personal introduction card`} />
+            <meta name="twitter:image" content={user.avatar || '/default-avatar.png'} />
+          </>
+        )}
       </Head>
 
       <div className="min-h-screen dark-gradient-bg starry-bg shooting-stars relative overflow-hidden">
@@ -166,6 +192,7 @@ export default function UserCardPage() {
               links={user.links || []}
               avatar={user.avatar}
               isPreview={false}
+              onLinkClick={handleLinkClick}
               className="animate-scale-in"
             />
 

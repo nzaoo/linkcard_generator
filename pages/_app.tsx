@@ -1,7 +1,7 @@
 import '@/styles/globals.css'
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { ToastProvider } from '@/components/ui/Toast'
 
 // Type declarations for analytics and PWA
@@ -13,17 +13,13 @@ declare global {
   }
 }
 
+// Google Analytics
+const GA_TRACKING_ID = process.env.NEXT_PUBLIC_GA_ID
+
 export default function App({ Component, pageProps }: AppProps) {
-  const [isClient, setIsClient] = useState(false)
-  const [isOnline, setIsOnline] = useState(true)
-
   useEffect(() => {
-    setIsClient(true)
-  }, [])
-
-  // Service Worker Registration
-  useEffect(() => {
-    if ('serviceWorker' in navigator && typeof window !== 'undefined') {
+    // Register service worker for PWA
+    if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker
           .register('/sw.js')
@@ -35,83 +31,53 @@ export default function App({ Component, pageProps }: AppProps) {
           })
       })
     }
-  }, [])
 
-  // Online/Offline detection
-  useEffect(() => {
-    const handleOnline = () => setIsOnline(true)
-    const handleOffline = () => setIsOnline(false)
-
-    window.addEventListener('online', handleOnline)
-    window.addEventListener('offline', handleOffline)
-
-    return () => {
-      window.removeEventListener('online', handleOnline)
-      window.removeEventListener('offline', handleOffline)
-    }
-  }, [])
-
-  // PWA Install Prompt
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      window.addEventListener('beforeinstallprompt', (e) => {
-        e.preventDefault()
-        window.deferredPrompt = e
-        console.log('PWA install prompt ready')
-      })
-    }
-  }, [])
-
-  // Analytics setup
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      // Initialize dataLayer
-      window.dataLayer = window.dataLayer || []
-      
-      // Define gtag function
-      const gtag = function(...args: any[]) {
-        window.dataLayer?.push(args)
-      }
-      window.gtag = gtag
-      
-      // Load Google Analytics
+    // Initialize Google Analytics
+    if (GA_TRACKING_ID && typeof window !== 'undefined') {
+      // Load gtag script
       const script = document.createElement('script')
       script.async = true
-      script.src = `https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`
+      script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`
       document.head.appendChild(script)
-      
-      // Initialize GA
-      gtag('js', new Date())
-      gtag('config', process.env.NEXT_PUBLIC_GA_ID)
-    }
 
-    // Performance monitoring
-    if (typeof window !== 'undefined') {
-      // Track page load performance
-      window.addEventListener('load', () => {
-        const navigation = performance.getEntriesByType(
-          'navigation'
-        )[0] as PerformanceNavigationTiming
-        if (navigation) {
-          const loadTime = navigation.loadEventEnd - navigation.loadEventStart
-          console.log('Page load time:', loadTime)
-          
-          // Track performance metrics
-          if (window.gtag) {
-            window.gtag('event', 'timing_complete', {
-              name: 'load',
-              value: Math.round(loadTime)
-            })
-          }
-        }
+      // Initialize gtag
+      window.dataLayer = window.dataLayer || []
+      window.gtag = function gtag() {
+        window.dataLayer!.push(arguments)
+      }
+      window.gtag('js', new Date())
+      window.gtag('config', GA_TRACKING_ID, {
+        page_title: document.title,
+        page_location: window.location.href,
+      })
+
+      // Track page views
+      const handleRouteChange = (url: string) => {
+        window.gtag!('config', GA_TRACKING_ID, {
+          page_title: document.title,
+          page_location: url,
+        })
+      }
+
+      // Listen for route changes
+      const originalPushState = history.pushState
+      const originalReplaceState = history.replaceState
+
+      history.pushState = function(...args) {
+        originalPushState.apply(history, args)
+        handleRouteChange(window.location.href)
+      }
+
+      history.replaceState = function(...args) {
+        originalReplaceState.apply(history, args)
+        handleRouteChange(window.location.href)
+      }
+
+      window.addEventListener('popstate', () => {
+        handleRouteChange(window.location.href)
       })
     }
   }, [])
-
-  // Prevent hydration mismatch
-  if (!isClient) {
-    return null
-  }
 
   return (
     <ToastProvider>
@@ -181,6 +147,29 @@ export default function App({ Component, pageProps }: AppProps) {
             })
           }}
         />
+
+        {/* Google Analytics */}
+        {GA_TRACKING_ID && (
+          <>
+            <script
+              async
+              src={`https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`}
+            />
+            <script
+              dangerouslySetInnerHTML={{
+                __html: `
+                  window.dataLayer = window.dataLayer || [];
+                  function gtag(){dataLayer.push(arguments);}
+                  gtag('js', new Date());
+                  gtag('config', '${GA_TRACKING_ID}', {
+                    page_title: document.title,
+                    page_location: window.location.href,
+                  });
+                `,
+              }}
+            />
+          </>
+        )}
       </Head>
 
       {/* Offline indicator */}

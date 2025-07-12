@@ -38,6 +38,7 @@ export interface CardPreviewProps {
   avatar?: string
   isPreview?: boolean
   className?: string
+  onLinkClick?: (link: SocialLink) => void
 }
 
 export interface FormInputProps {

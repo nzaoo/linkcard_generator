@@ -7,6 +7,9 @@ import ShareButton from '@/components/ui/ShareButton'
 import ErrorBoundary from '@/components/ui/ErrorBoundary'
 import FullScreenLoading from '@/components/ui/LoadingSpinner'
 import { useToast, ToastContainer } from '@/components/ui/Toast'
+import QRCodeGenerator from '@/components/ui/QRCodeGenerator'
+import AdvancedSharing from '@/components/ui/AdvancedSharing'
+import { trackCardView, getAnalytics, AnalyticsData } from '@/lib/analytics'
 import Head from 'next/head'
 
 // Type declaration for gtag
@@ -26,6 +29,8 @@ export default function SuccessPage() {
   const [showConfetti, setShowConfetti] = useState(false)
   const [isClient, setIsClient] = useState(false)
   const [cardUrl, setCardUrl] = useState('')
+  const [analytics, setAnalytics] = useState<AnalyticsData | null>(null)
+  const [showAdvancedSharing, setShowAdvancedSharing] = useState(false)
 
   useEffect(() => {
     setIsClient(true)
@@ -48,6 +53,13 @@ export default function SuccessPage() {
         if (!querySnapshot.empty) {
           const userData = querySnapshot.docs[0].data()
           setUser(userData)
+          
+          // Track card view
+          await trackCardView(slug as string, document.referrer || 'direct')
+          
+          // Get analytics data
+          const analyticsData = await getAnalytics(slug as string)
+          setAnalytics(analyticsData)
           
           // Only show confetti on client-side
           if (isClient) {
@@ -195,6 +207,27 @@ export default function SuccessPage() {
                   Share Your Card
                 </h3>
 
+                {/* Analytics Display */}
+                {analytics && (
+                  <div className="mb-6 p-4 bg-white/10 rounded-xl">
+                    <h4 className="text-lg font-semibold text-white mb-3">Card Statistics</h4>
+                    <div className="grid grid-cols-3 gap-4 text-center">
+                      <div>
+                        <div className="text-2xl font-bold text-yellow-400">{analytics.views}</div>
+                        <div className="text-sm text-white/70">Views</div>
+                      </div>
+                      <div>
+                        <div className="text-2xl font-bold text-blue-400">{analytics.clicks}</div>
+                        <div className="text-sm text-white/70">Clicks</div>
+                      </div>
+                      <div>
+                        <div className="text-2xl font-bold text-green-400">{analytics.shares}</div>
+                        <div className="text-sm text-white/70">Shares</div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
                 {/* Card URL */}
                 <div className="mb-8">
                   <label className="block text-sm font-medium text-gray-300 mb-3">
@@ -256,6 +289,16 @@ export default function SuccessPage() {
                   </div>
                 </div>
 
+                {/* Advanced Sharing Toggle */}
+                <div className="mb-8">
+                  <button
+                    onClick={() => setShowAdvancedSharing(!showAdvancedSharing)}
+                    className="w-full bg-white/20 backdrop-blur-lg text-white px-6 py-3 rounded-xl font-semibold hover:bg-white/30 transition-all duration-200 border border-white/30"
+                  >
+                    {showAdvancedSharing ? 'Hide' : 'Show'} Advanced Sharing Options
+                  </button>
+                </div>
+
                 {/* Action Buttons */}
                 <div className="space-y-4">
                   <button
@@ -288,6 +331,24 @@ export default function SuccessPage() {
               </div>
             </div>
           </div>
+
+          {/* Advanced Sharing Section */}
+          {showAdvancedSharing && (
+            <div className="mt-12 animate-fade-in">
+              <div className="grid lg:grid-cols-2 gap-8">
+                <AdvancedSharing
+                  url={cardUrl}
+                  title={shareTitle}
+                  description={shareDescription}
+                  slug={slug as string}
+                />
+                <QRCodeGenerator
+                  url={cardUrl}
+                  title="Scan to view card"
+                />
+              </div>
+            </div>
+          )}
 
           {/* Tips Section */}
           <div className="mt-16 animate-fade-in" style={{ animationDelay: '400ms' }}>
