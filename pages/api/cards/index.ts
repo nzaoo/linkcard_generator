@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { db } from '@/lib/firebase'
 import { collection, doc, getDocs, addDoc, updateDoc, deleteDoc, query, where, orderBy, limit } from 'firebase/firestore'
-import { generateSlug } from '@/utils/generateSlug'
+import generateSlug from '@/utils/generateSlug'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { method } = req

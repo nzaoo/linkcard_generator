@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
 import { db } from '@/lib/firebase'
@@ -36,11 +36,7 @@ export default function DashboardPage() {
   const [sortBy, setSortBy] = useState<'name' | 'created' | 'views'>('created')
   const [showBulkOperations, setShowBulkOperations] = useState(false)
 
-  useEffect(() => {
-    fetchCards()
-  }, [])
-
-  const fetchCards = async () => {
+  const fetchCards = useCallback(async () => {
     try {
       setIsLoading(true)
       
@@ -80,7 +76,11 @@ export default function DashboardPage() {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [showError])
+
+  useEffect(() => {
+    fetchCards()
+  }, [fetchCards])
 
   const filteredCards = cards.filter(card =>
     card.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
