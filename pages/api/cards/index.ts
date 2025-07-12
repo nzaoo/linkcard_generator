@@ -59,19 +59,27 @@ async function handleGet(req: NextApiRequest, res: NextApiResponse) {
     }
 
     const querySnapshot = await getDocs(q)
-    const cards = querySnapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data(),
-      createdAt: doc.data().createdAt?.toDate?.() || doc.data().createdAt
-    }))
+    const cards = querySnapshot.docs.map(doc => {
+      const data = doc.data()
+      return {
+        id: doc.id,
+        name: data.name || '',
+        bio: data.bio || '',
+        links: data.links || [],
+        avatar: data.avatar || '',
+        slug: data.slug || '',
+        createdAt: data.createdAt?.toDate?.() || data.createdAt || new Date(),
+        updatedAt: data.updatedAt?.toDate?.() || data.updatedAt || new Date()
+      }
+    })
 
     // Apply search filter client-side if needed
     let filteredCards = cards
     if (search && typeof search === 'string') {
       const searchLower = search.toLowerCase()
       filteredCards = cards.filter(card => 
-        card.name?.toLowerCase().includes(searchLower) ||
-        card.bio?.toLowerCase().includes(searchLower)
+        card.name.toLowerCase().includes(searchLower) ||
+        card.bio.toLowerCase().includes(searchLower)
       )
     }
 
