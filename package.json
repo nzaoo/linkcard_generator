@@ -1,8 +1,9 @@
 {
   "name": "nzaocard",
   "version": "1.0.0",
-  "description": "Create beautiful personal introduction cards with stunning animations and professional design",
+  "description": "Personal introduction card generator",
   "private": true,
+  "buildTimestamp": "2024-12-19T12:30:00Z",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
