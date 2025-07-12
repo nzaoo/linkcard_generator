@@ -281,7 +281,6 @@ export default function Home() {
             >
               📊 Dashboard
             </button>
-            <ThemeCustomizer />
           </div>
         </nav>
 

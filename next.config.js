@@ -2,9 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
-  experimental: {
-    appDir: false,
-  },
+
   // Force fresh build
   generateBuildId: async () => {
     return `build-${Date.now()}`
