@@ -1,8 +1,8 @@
 // pages/u/[slug].tsx
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import { db } from '@/lib/firebase'
-import { collection, query, where, getDocs } from 'firebase/firestore'
+// import { db } from '@/lib/firebase' // Xóa dòng này
+// import { collection, query, where, getDocs } from 'firebase/firestore' // Xóa dòng này
 import CardPreview from '@/components/Card/CardPreview'
 import ShareButton from '@/components/ui/ShareButton'
 import ErrorBoundary from '@/components/ui/ErrorBoundary'
@@ -37,25 +37,29 @@ export default function UserCardPage() {
       if (!slug) return
 
       try {
-        const q = query(collection(db, 'cards'), where('slug', '==', slug))
-        const querySnapshot = await getDocs(q)
+        // Gọi API backend thay vì truy cập Firestore trực tiếp
+        const res = await fetch(`/api/cards/${slug}`)
+        if (!res.ok) {
+          setUser(undefined)
+          setIsLoading(false)
+          return
+        }
+        const result = await res.json()
+        if (result && result.success && result.data) {
+          setUser(result.data)
 
-        if (!querySnapshot.empty) {
-          const userData = querySnapshot.docs[0].data()
-          setUser(userData)
-          
           // Track card view with referrer information
           const referrer = document.referrer || 'direct'
           await trackCardView(slug as string, referrer)
-          
+
           // Track page view in analytics
           if (typeof window !== 'undefined' && window.gtag) {
             window.gtag('event', 'page_view', {
-              page_title: `${userData.name}'s Card`,
+              page_title: `${result.data.name}'s Card`,
               page_location: window.location.href,
               custom_parameter: {
                 card_slug: slug,
-                card_name: userData.name,
+                card_name: result.data.name,
                 referrer: referrer
               }
             })
