@@ -37,7 +37,7 @@ export default function SocialLinks({ links, onChange }: SocialLinksProps) {
   return (
     <div className="space-y-4">
       <label className="block text-sm font-medium text-gray-200">
-        Liên kết mạng xã hội (tùy chọn)
+        Social Media Links (optional)
       </label>
 
       {/* Existing links */}
@@ -69,7 +69,7 @@ export default function SocialLinks({ links, onChange }: SocialLinksProps) {
               onChange={(e) => setSelectedPlatform(e.target.value)}
               className="px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-yellow-400"
             >
-              <option value="">Chọn nền tảng</option>
+              <option value="">Select platform</option>
               {SOCIAL_PLATFORMS_LIST.map((platform) => (
                 <option key={platform.key} value={platform.key}>
                   {platform.icon} {platform.name}
@@ -81,7 +81,7 @@ export default function SocialLinks({ links, onChange }: SocialLinksProps) {
               type="url"
               value={newUrl}
               onChange={(e) => setNewUrl(e.target.value)}
-              placeholder="Nhập URL"
+              placeholder="Enter URL"
               className="px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-400"
             />
           </div>
@@ -92,7 +92,7 @@ export default function SocialLinks({ links, onChange }: SocialLinksProps) {
               disabled={!selectedPlatform || !newUrl.trim()}
               className="px-4 py-2 bg-gradient-to-r from-yellow-400 to-orange-500 text-gray-900 rounded-lg font-medium hover:from-yellow-500 hover:to-orange-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
             >
-              Thêm
+              Add
             </button>
             <button
               onClick={() => {
@@ -102,7 +102,7 @@ export default function SocialLinks({ links, onChange }: SocialLinksProps) {
               }}
               className="px-4 py-2 bg-gray-600 text-white rounded-lg font-medium hover:bg-gray-700 transition-colors"
             >
-              Hủy
+              Cancel
             </button>
           </div>
         </div>
@@ -112,7 +112,7 @@ export default function SocialLinks({ links, onChange }: SocialLinksProps) {
           className="w-full p-3 border-2 border-dashed border-white/20 rounded-xl text-white hover:border-yellow-400 hover:text-yellow-400 transition-all duration-200 flex items-center justify-center space-x-2"
         >
           <span>➕</span>
-          <span>Thêm liên kết</span>
+          <span>{'Add Link'}</span>
         </button>
       )}
     </div>
