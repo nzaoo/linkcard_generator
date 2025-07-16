@@ -117,15 +117,15 @@ export default function Home() {
     const newErrors: { [key: string]: string } = {}
 
     if (!name.trim()) {
-      newErrors.name = 'Tên là bắt buộc'
+      newErrors.name = 'Name is required'
     } else if (name.trim().length < 2) {
-      newErrors.name = 'Tên phải có ít nhất 2 ký tự'
+      newErrors.name = 'Name must be at least 2 characters'
     }
 
     if (!bio.trim()) {
-      newErrors.bio = 'Giới thiệu là bắt buộc'
+      newErrors.bio = 'Bio is required'
     } else if (bio.trim().length < 10) {
-      newErrors.bio = 'Giới thiệu phải có ít nhất 10 ký tự'
+      newErrors.bio = 'Bio must be at least 10 characters'
     }
 
     setErrors(newErrors)
