@@ -90,6 +90,9 @@ export default function Home() {
 
   // Load draft on mount
   useEffect(() => {
+    // Remove old draft to clear any Vietnamese text from previous versions
+    localStorage.removeItem('nzaocard-draft');
+
     const savedDraft = localStorage.getItem('nzaocard-draft')
     if (savedDraft) {
       try {
