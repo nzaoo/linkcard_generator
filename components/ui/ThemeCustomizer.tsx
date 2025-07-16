@@ -118,7 +118,7 @@ export default function ThemeCustomizer({
 
       {/* Theme Dropdown */}
       {isOpen && (
-        <div className="absolute top-full mt-2 left-0 right-0 bg-gray-900/95 backdrop-blur-xl rounded-xl border border-white/20 shadow-2xl z-50 animate-fade-in">
+        <div className="absolute top-full mt-2 left-0 bg-gray-900/95 backdrop-blur-xl rounded-xl border border-white/20 shadow-2xl z-50 animate-fade-in min-w-[220px] max-w-[320px] w-max overflow-x-auto">
           <div className="p-4">
             <h3 className="text-white font-semibold mb-3">Choose Theme</h3>
             <div className="grid grid-cols-2 gap-3">
@@ -135,10 +135,10 @@ export default function ThemeCustomizer({
                       : 'border-white/20 hover:border-white/40'
                   }`}
                 >
-                  <div className="flex items-center space-x-2">
+                  <div className="flex items-center space-x-2 whitespace-nowrap overflow-x-auto">
                     <span className="text-2xl">{theme.preview}</span>
                     <div className="text-left">
-                      <div className="text-white font-medium text-sm">{theme.name}</div>
+                      <div className="text-white font-medium text-sm whitespace-nowrap overflow-x-auto">{theme.name}</div>
                       <div className="flex space-x-1 mt-1">
                         <div 
                           className="w-3 h-3 rounded-full" 
