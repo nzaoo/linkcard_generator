@@ -6,7 +6,7 @@ A modern, beautiful, and feature-rich personal introduction card generator built
 
 ## ✨ Features
 
-### 🎨 **Visual & UX Enhancements**
+### 🎨 **Visual & UX Enhancement**
 
 - **Animated Effects**: Smooth animations and micro-interactions
 - **Loading Skeletons**: Beautiful shimmer effects during loading
